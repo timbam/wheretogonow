@@ -8,6 +8,7 @@
     "url": "https://github.com/timbam/weather_close_to_me"
   },
   "scripts": {
+    "build": "gulp build",
     "start": "node server.js",
     "watch": "nodemon server.js"
   },
