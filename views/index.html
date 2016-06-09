@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Weather close to me</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900"/>
     <link rel="stylesheet" href="/css/main.css"/>
   </head>
@@ -17,12 +18,5 @@
     <script src="/js/vendor.bundle.js"></script>
     <script src="/js/bundle.js"></script>
     <!-- Fix for bootstrap. Need to implement this in a better way! -->
-    <script>
-     $(document).on('click','.navbar-collapse.in',function(e) {
-        if( $(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle' ) {
-            $(this).collapse('hide');
-        }
-     }); 
-    </script>
   </body>
 </html>
