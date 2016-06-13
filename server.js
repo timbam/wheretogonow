@@ -47,7 +47,10 @@ app.post('/api/search', function(req, res) {
     results = cities.filter(function(entry) {
         return entry.name.toUpperCase().indexOf(name) !== -1;
     });
-    res.send(results.slice(0, numberOfCities));
+    var sortedResults = _.sortBy(results, function(o) {
+      return o.name.length;
+    });
+    res.send(sortedResults.slice(0, numberOfCities));
 })
 
 app.post('/api/findNearbyCities', function(req, res) {

@@ -63,7 +63,7 @@ class SearchBar extends React.Component {
       <input type="range" min="3" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
       <h6>Number of cities to search for: {this.state.numberOfCities}</h6>
         {/*<button onClick={this.onSetIndexToSortBy(50)} > Set Index </button>*/}
-        {this.props.weather.searchResults.length > 1 ? searchResults : null}
+        {this.props.weather.searchResults.length > 0 ? searchResults : null}
       </div>
     );
   }

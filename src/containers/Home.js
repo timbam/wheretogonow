@@ -60,7 +60,6 @@ class Home extends React.Component {
   }
 
   render(){
-    console.log(this.props.weather);
     if(this.props.weather.nearbyCitiesWeather.length > 0){
       return(
         <div>
