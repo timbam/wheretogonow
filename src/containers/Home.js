@@ -13,7 +13,6 @@ class Home extends React.Component {
   }
 
   filterByDay(index){
-    console.log(index);
     this.props.setIndexToSortBy(index);
   }
 

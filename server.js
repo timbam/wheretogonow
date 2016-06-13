@@ -57,36 +57,49 @@ app.post('/api/findNearbyCities', function(req, res) {
   var cityObject = req.body.cityObject;
   var radius = req.body.radius;
   var numberOfCities = req.body.numberOfCities;
-function filterByCoord(source, coord) {
-  var results = [];
+  function filterByCoord(source, coord) {
+    var results = [];
 
-  results = source.filter(function(entry) {
-    return  entry.coordinates[1] > coord[0] &&
-            entry.coordinates[1] < coord[1] &&
-            entry.coordinates[0] > coord[2] &&
-            entry.coordinates[0] < coord[3];
-  });
-  return results;
-};
-function FindCities(cityObject, radius, numberOfCities) {
-  var distanceLat = radius/111; // 111km/degree so we divide by 111 to get lateral degrees  
-  var distanceLon = Math.abs(radius/(Math.PI*6378*Math.cos(cityObject.coordinates[0]*Math.PI/180)/180));
-  var lowLon = cityObject.coordinates[1] - distanceLon;
-  var highLon = cityObject.coordinates[1] + distanceLon;
-  var lowLat = cityObject.coordinates[0] - distanceLat;
-  var highLat = cityObject.coordinates[0] + distanceLat;
-  var coord = [lowLon, highLon, lowLat, highLat];
+    results = source.filter(function(entry) {
+      return  entry.coordinates[1] > coord[0] &&
+              entry.coordinates[1] < coord[1] &&
+              entry.coordinates[0] > coord[2] &&
+              entry.coordinates[0] < coord[3];
+    });
+    return results;
+  };
+  function FindCities(cityObject, radius, numberOfCities) {
+    var distanceLat = radius/111; // 111km/degree so we divide by 111 to get lateral degrees  
+    var distanceLon = Math.abs(radius/(Math.PI*6378*Math.cos(cityObject.coordinates[0]*Math.PI/180)/180));
+    var lowLon = cityObject.coordinates[1] - distanceLon;
+    var highLon = cityObject.coordinates[1] + distanceLon;
+    var lowLat = cityObject.coordinates[0] - distanceLat;
+    var highLat = cityObject.coordinates[0] + distanceLat;
+    var coord = [lowLon, highLon, lowLat, highLat];
 
-// Find all cities close to cityObject and filter them by population
-  var citiesByCoord = filterByCoord(cities, coord);
-  var citiesSortedByPopulation = _.orderBy(citiesByCoord, ['population'], ['desc']);
-
-// Return an array of city objects
-  return citiesSortedByPopulation.slice(0, numberOfCities);
-};
+  // Find all cities close to cityObject and filter them by population
+    var citiesByCoord = filterByCoord(cities, coord);
+    var citiesSortedByPopulation = _.orderBy(citiesByCoord, ['population'], ['desc']);
+    var largestCities = citiesSortedByPopulation.slice(0, numberOfCities)
+  // Return an array of city objects, including the cityObject
+  function FindInArray(array, obj){
+    for(var i = 0; i < array.length; i++) {
+      if(obj.name == array[i].name){
+        return true;
+      }else if(i == (array.length - 1)){
+        return false;
+      };
+    };
+  };
+    if(!FindInArray(largestCities, cityObject)){
+      largestCities[largestCities.length - 1] = cityObject;
+      return largestCities;
+    }else {
+      return largestCities;
+    }
+  };
 res.send(FindCities(cityObject, radius, numberOfCities));
-
-})
+});
 
 // other requests
 app.get('*', function (req, res) {
