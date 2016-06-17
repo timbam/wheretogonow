@@ -47,12 +47,13 @@ class Home extends React.Component {
       return (
         <td key={index}>
         <img src={"/sym/b38/" + SYMBOLS[symbolNr-1] + ".png"}  /><br/>
-        {weather.maxTemperature.value} °C</td>
+        {weather.maxTemperature.value.slice(0,weather.maxTemperature.value.indexOf('.'))} °C
+        </td>
       );
     });
     return(
         <tr key={index}>
-          <td>{cityData.name}</td>
+          <td className="tdCityName" >{cityData.name}</td>
           {tempArray}
         </tr>
     );
@@ -61,8 +62,8 @@ class Home extends React.Component {
   render(){
     if(this.props.weather.nearbyCitiesWeather.length > 0){
       return(
-        <div>
-          <table className="table table-hover">
+        <div className="row">
+          <table className="col-lg-12 table table-hover">
             <thead>
               <tr>
                 <th>City</th>

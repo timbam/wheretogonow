@@ -11,6 +11,7 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_NEARBY_CITIES:
       return { ...state, nearbyCities: action.payload.data, nearbyCitiesWeather: []};
     case FETCH_WEATHER:
+    console.log(action.payload.data);
       var nState = {
         name: action.payload.data.name,
         weatherArray: []

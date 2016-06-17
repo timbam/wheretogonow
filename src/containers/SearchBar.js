@@ -4,6 +4,7 @@ import { bindActionCreators} from 'redux';
 import { searchCity, findNearbyCities, fetchWeather, setIndexToSortBy } from '../actions/index';
 import _ from 'lodash';
 import ReactSlider from 'react-slider';
+import classNames from 'classnames';
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -22,8 +23,6 @@ class SearchBar extends React.Component {
 
   onFormSubmit(event) {
     event.preventDefault();
-    // Fetch weather data
-    // this.setState({ term: ''});
   }
 
   onfetchWeather(cityObject) {
@@ -38,32 +37,38 @@ class SearchBar extends React.Component {
   }
 
   render(){
+    var sResultsClasses = classNames({
+        'searchResults': true,
+         'col-lg-12': true,
+         'isHid': !(this.state.term.length > 0)
+    });
     var searchResults = this.props.weather.searchResults.map(item => {
       return(
         <div key={item._id} >
-          <button onClick={this.onfetchWeather.bind(this, item)} className="btn-link">{item.name} ({item.country_code})</button>
+          <button onClick={this.onfetchWeather.bind(this, item)} className="btn btn-default">{item.name} ({item.country_code})</button>
         </div>
       );
     });
     return(
-      <div>
-      <form onSubmit={this.onFormSubmit} className="input-group">
-        <input 
-        placeholder="Where are you now?"
-        className="form-control"
-        value={this.state.term}
-        onChange={this.onInputChange} 
-        />
-{/*        <span className="input-group-btn">
-          <button type="submit" className="btn btn-secondary">Submit</button>
-        </span>*/}
-      </form>
-      <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
-      <h6>Radius: {this.state.radius}</h6>
-      <input type="range" min="3" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
-      <h6>Number of cities to search for: {this.state.numberOfCities}</h6>
-        {/*<button onClick={this.onSetIndexToSortBy(50)} > Set Index </button>*/}
-        {this.props.weather.searchResults.length > 0 ? searchResults : null}
+      <div className="SearchBar row">
+        <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
+          <input 
+          placeholder="Where are you now?"
+          className="form-control"
+          value={this.state.term}
+          onChange={this.onInputChange}  
+          />
+  {/*        <span className="input-group-btn">
+            <button type="submit" className="btn btn-secondary">Submit</button>
+          </span>*/}
+        </form>
+        <div className={sResultsClasses} >
+          {this.props.weather.searchResults.length > 0 ? searchResults : null}
+        </div>
+        <h4>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</h4>
+        <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
+        <h4>Number of cities to search for: <span className="rangeTitles">{this.state.numberOfCities}</span></h4>
+        <input type="range" min="3" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
       </div>
     );
   }
