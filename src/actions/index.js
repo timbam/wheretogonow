@@ -4,6 +4,7 @@ export const FETCH_WEATHER = 'FETCH_WEATHER';
 export const SEARCH_CITY = 'SEARCH_CITY';
 export const INDEX_TO_SEARCH_BY = 'INDEX_TO_SEARCH_BY';
 export const FIND_NEARBY_CITIES = 'FIND_NEARBY_CITIES';
+export const ADD_EPICENTER = 'ADD_EPICENTER';
 
 export function searchCity(name, numberOfCities) {
   const request = axios.post('/api/search', {
@@ -37,6 +38,13 @@ const request = axios.post('/api/getWeather', {
     type: FETCH_WEATHER,
     payload: request
   }
+}
+
+export function addEpicenterToState(cityObject) {
+  return{
+    type: ADD_EPICENTER,
+    payload: cityObject
+  };
 }
 
 export function setIndexToSortBy(index) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
-import { searchCity, findNearbyCities, fetchWeather, setIndexToSortBy } from '../actions/index';
+import { searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState } from '../actions/index';
 import _ from 'lodash';
 import ReactSlider from 'react-slider';
 import classNames from 'classnames';
@@ -27,6 +27,7 @@ class SearchBar extends React.Component {
 
   onfetchWeather(cityObject) {
     this.setState({term: ''});
+    this.props.addEpicenterToState(cityObject);
     this.props.findNearbyCities(cityObject, this.state.radius, this.state.numberOfCities).then(() =>
       this.props.weather.nearbyCities.map(city => this.props.fetchWeather(city))
     );
@@ -78,7 +79,7 @@ function mapStateToProps({ weather }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchCity, findNearbyCities, fetchWeather, setIndexToSortBy }, dispatch);
+  return bindActionCreators({ searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

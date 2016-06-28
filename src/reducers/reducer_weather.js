@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY } from '../actions/index';
+import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER } from '../actions/index';
 
-const INITIAL_STATE = {searchResults: [], nearbyCities: [], nearbyCitiesWeather: [] };
+const INITIAL_STATE = {searchResults: [], nearbyCities: [], nearbyCitiesWeather: [], epicenter: null, dayIndex: 0 };
 
 export default function(state = INITIAL_STATE , action) {
   switch (action.type) {
@@ -11,7 +11,6 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_NEARBY_CITIES:
       return { ...state, nearbyCities: action.payload.data, nearbyCitiesWeather: []};
     case FETCH_WEATHER:
-    console.log(action.payload.data);
       var nState = {
         name: action.payload.data.name,
         weatherArray: []
@@ -59,9 +58,11 @@ export default function(state = INITIAL_STATE , action) {
         nearbyCitiesWeather: [ ...state.nearbyCitiesWeather, nState],
         searchResults: [] 
       };
+    case ADD_EPICENTER:
+      return {...state, epicenter: action.payload};
     case INDEX_TO_SEARCH_BY:
     var nearbyCitiesByWeatherOrdered = _.orderBy(state.nearbyCitiesWeather, ['weatherArray[' + action.payload + '].maxTemperature.value'], ['desc']);
-      return { ...state, nearbyCitiesWeather: nearbyCitiesByWeatherOrdered};
+      return { ...state, nearbyCitiesWeather: nearbyCitiesByWeatherOrdered, dayIndex: action.payload};
   }
 
   return state;
