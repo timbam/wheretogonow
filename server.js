@@ -75,7 +75,7 @@ app.post('/api/findNearbyCities', function(req, res) {
     });
     var deCluster = [];
     var j = 0;
-    while (deCluster.length < numberOfCities) {
+    while (deCluster.length < numberOfCities && j < results.length) {
         var addItem = true;
         if(j == 0) {
           deCluster.push(results[0]);
@@ -83,9 +83,7 @@ app.post('/api/findNearbyCities', function(req, res) {
           for(var i = 0; i < deCluster.length; i++) {
             if(distance(results[j].coordinates[0], results[j].coordinates[1], deCluster[i].coordinates[0], deCluster[i].coordinates[1]) < 50) {
               addItem = false;
-              console.log('addItem = false');
             }else if((i == deCluster.length - 1) && (addItem == true)) {
-              console.log('adding item')
               deCluster.push(results[j]);
             }
           }
