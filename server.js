@@ -57,30 +57,48 @@ app.post('/api/findNearbyCities', function(req, res) {
   var cityObject = req.body.cityObject;
   var radius = req.body.radius;
   var numberOfCities = req.body.numberOfCities;
-  function filterByCoord(source, coord) {
+  function distance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = (lat2 - lat1) * Math.PI / 180;  // deg2rad below
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = 
+       0.5 - Math.cos(dLat)/2 + 
+       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+       (1 - Math.cos(dLon))/2;
+    return R * 2 * Math.asin(Math.sqrt(a));
+  }
+  function filterByCoord(source, coord, radius, numberOfCities) {
     var results = [];
-
     results = source.filter(function(entry) {
-      return  entry.coordinates[1] > coord[0] &&
-              entry.coordinates[1] < coord[1] &&
-              entry.coordinates[0] > coord[2] &&
-              entry.coordinates[0] < coord[3];
+      var dist = distance(coord[0], coord[1], entry.coordinates[0], entry.coordinates[1]);
+      return  50 < dist && dist < radius;
     });
-    return results;
+    var deCluster = [];
+    var j = 0;
+    while (deCluster.length < numberOfCities) {
+        var addItem = true;
+        if(j == 0) {
+          deCluster.push(results[0]);
+        } else {
+          for(var i = 0; i < deCluster.length; i++) {
+            if(distance(results[j].coordinates[0], results[j].coordinates[1], deCluster[i].coordinates[0], deCluster[i].coordinates[1]) < 50) {
+              addItem = false;
+              console.log('addItem = false');
+            }else if((i == deCluster.length - 1) && (addItem == true)) {
+              console.log('adding item')
+              deCluster.push(results[j]);
+            }
+          }
+        }
+        j++;
+    }
+    return deCluster;
   };
   function FindCities(cityObject, radius, numberOfCities) {
-    var distanceLat = radius/111; // 111km/degree so we divide by 111 to get lateral degrees  
-    var distanceLon = Math.abs(radius/(Math.PI*6378*Math.cos(cityObject.coordinates[0]*Math.PI/180)/180));
-    var lowLon = cityObject.coordinates[1] - distanceLon;
-    var highLon = cityObject.coordinates[1] + distanceLon;
-    var lowLat = cityObject.coordinates[0] - distanceLat;
-    var highLat = cityObject.coordinates[0] + distanceLat;
-    var coord = [lowLon, highLon, lowLat, highLat];
-
-  // Find all cities close to cityObject and filter them by population
-    var citiesByCoord = filterByCoord(cities, coord);
-    var citiesSortedByPopulation = _.orderBy(citiesByCoord, ['population'], ['desc']);
-    var largestCities = citiesSortedByPopulation.slice(0, numberOfCities)
+    var coord = [cityObject.coordinates[0], cityObject.coordinates[1]];
+  // Find all cities close to cityObject and filter them by coordinates
+    var citiesByCoord = filterByCoord(cities, coord, radius, numberOfCities);
+    var largestCities = citiesByCoord.slice(0, numberOfCities)
   // Return an array of city objects, including the cityObject
   function FindInArray(array, obj){
     for(var i = 0; i < array.length; i++) {
