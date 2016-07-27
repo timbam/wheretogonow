@@ -1,8 +1,14 @@
 import _ from 'lodash';
+import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER, FIND_CLICKED_CITY } from '../actions/index';
 
-import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER } from '../actions/index';
-
-const INITIAL_STATE = {searchResults: [], nearbyCities: [], nearbyCitiesWeather: [], epicenter: null, dayIndex: 0 };
+const INITIAL_STATE = {
+  searchResults: [], 
+  nearbyCities: [], 
+  nearbyCitiesWeather: JSON.parse(localStorage.getItem('nearbyCitiesWeather')) || [], 
+  clickedCity: null, 
+  epicenter: JSON.parse(localStorage.getItem('epicenter')) || null, 
+  dayIndex: 0 
+};
 
 export default function(state = INITIAL_STATE , action) {
   switch (action.type) {
@@ -10,6 +16,8 @@ export default function(state = INITIAL_STATE , action) {
       return { ...state, searchResults: action.payload.data};
     case FIND_NEARBY_CITIES:
       return { ...state, nearbyCities: action.payload.data, nearbyCitiesWeather: []};
+    case FIND_CLICKED_CITY:
+      return { ...state, clickedCity: action.payload.data};
     case FETCH_WEATHER:
       var nState = {
         name: action.payload.data.name,

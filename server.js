@@ -5,20 +5,24 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var reactCookie = require('react-cookie');
+// var cookieParser = require('cookie-parser');
+// var reactCookie = require('react-cookie');
 var app = express();
 // yr.no stuff
 var yrno = require('yr.no-interface'),
 LOC_VER = 1.2;
 var xml2js = require('xml2js');
-var cities = require('./src/database/cities.json');
+const cities = require('./src/database/cities15000.json');
+const cities_1000 = require('./src/database/cities1000.json');
 var _ = require('lodash');
+var myFunctions = require('./src/scripts/myFunctions');
 
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(cookieParser()); 
 
 app.post('/api/getWeather', function(req, res) {
   var coordinates = req.body.coordinates;
@@ -39,6 +43,7 @@ app.post('/api/getWeather', function(req, res) {
   });
 });
 
+
 app.post('/api/search', function(req, res) {
     var name = req.body.name;
     var numberOfCities = req.body.numberOfCities;
@@ -53,24 +58,31 @@ app.post('/api/search', function(req, res) {
     res.send(sortedResults.slice(0, numberOfCities));
 })
 
+app.post('/api/findClosestCity', function(req, res) {
+  const coordinates = req.body.coordinates;
+  var results = cities_1000;
+  results.sort(function(a,b) {
+    var distA = myFunctions.distance(coordinates[0], coordinates[1], a.coordinates[0], a.coordinates[1]);
+    var distB = myFunctions.distance(coordinates[0], coordinates[1], b.coordinates[0], b.coordinates[1]);
+    if(distA > distB) {
+      return 1;
+    }
+    if(distB > distA) {
+      return -1;
+    }
+    return 0;
+  });
+  res.send(results[0]);
+})
+
 app.post('/api/findNearbyCities', function(req, res) {
   var cityObject = req.body.cityObject;
   var radius = req.body.radius;
   var numberOfCities = req.body.numberOfCities;
-  function distance(lat1, lon1, lat2, lon2) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = (lat2 - lat1) * Math.PI / 180;  // deg2rad below
-    var dLon = (lon2 - lon1) * Math.PI / 180;
-    var a = 
-       0.5 - Math.cos(dLat)/2 + 
-       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-       (1 - Math.cos(dLon))/2;
-    return R * 2 * Math.asin(Math.sqrt(a));
-  }
   function filterByCoord(source, coord, radius, numberOfCities) {
     var results = [];
     results = source.filter(function(entry) {
-      var dist = distance(coord[0], coord[1], entry.coordinates[0], entry.coordinates[1]);
+      var dist = myFunctions.distance(coord[0], coord[1], entry.coordinates[0], entry.coordinates[1]);
       return  50 < dist && dist < radius;
     });
     var deCluster = [];
@@ -81,7 +93,7 @@ app.post('/api/findNearbyCities', function(req, res) {
           deCluster.push(results[0]);
         } else {
           for(var i = 0; i < deCluster.length; i++) {
-            if(distance(results[j].coordinates[0], results[j].coordinates[1], deCluster[i].coordinates[0], deCluster[i].coordinates[1]) < 50) {
+            if(myFunctions.distance(results[j].coordinates[0], results[j].coordinates[1], deCluster[i].coordinates[0], deCluster[i].coordinates[1]) < 50) {
               addItem = false;
             }else if((i == deCluster.length - 1) && (addItem == true)) {
               deCluster.push(results[j]);
@@ -98,15 +110,15 @@ app.post('/api/findNearbyCities', function(req, res) {
     var citiesByCoord = filterByCoord(cities, coord, radius, numberOfCities);
     var largestCities = citiesByCoord.slice(0, numberOfCities)
   // Return an array of city objects, including the cityObject
-  function FindInArray(array, obj){
-    for(var i = 0; i < array.length; i++) {
-      if(obj.name == array[i].name){
-        return true;
-      }else if(i == (array.length - 1)){
-        return false;
+    function FindInArray(array, obj){
+      for(var i = 0; i < array.length; i++) {
+        if(obj.name == array[i].name){
+          return true;
+        }else if(i == (array.length - 1)){
+          return false;
+        };
       };
     };
-  };
     if(!FindInArray(largestCities, cityObject)){
       largestCities[largestCities.length - 1] = cityObject;
       return largestCities;
@@ -119,7 +131,7 @@ res.send(FindCities(cityObject, radius, numberOfCities));
 
 // other requests
 app.get('*', function (req, res) {
-  reactCookie.plugToRequest(req, res);
+  // reactCookie.plugToRequest(req, res);
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 

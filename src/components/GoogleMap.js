@@ -1,12 +1,16 @@
 import React from 'react';
 import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
-import { SYMBOLS } from '../database/constants'
-
+import { SYMBOLS } from '../database/constants';
+import {triggerEvent} from "react-google-maps/lib/utils";
 
 export default (props) => {
-  console.log(props.weather);
+  // console.log(props.weather);
   const {epicenter} = props.weather;
   const {nearbyCitiesWeather} = props.weather;
+  function handleOnClick(e) {
+    const coordinates = [e.latLng.lat(), e.latLng.lng()];
+    props.findClosestCity(coordinates);
+  }
   return (
     <GoogleMapLoader
       containerElement={ <div 
@@ -16,7 +20,10 @@ export default (props) => {
         }} /> 
       } 
       googleMapElement={
-        <GoogleMap defaultZoom={7} defaultCenter={{lat: epicenter.coordinates[0], lng: epicenter.coordinates[1] }} > 
+        <GoogleMap 
+        onClick={handleOnClick}
+        defaultZoom={7} 
+        defaultCenter={{lat: epicenter.coordinates[0], lng: epicenter.coordinates[1] }} > 
           {nearbyCitiesWeather.map((city, index) => {
             var {maxTemperature} = city.weatherArray[props.weather.dayIndex];
             return(

@@ -5,6 +5,7 @@ export const SEARCH_CITY = 'SEARCH_CITY';
 export const INDEX_TO_SEARCH_BY = 'INDEX_TO_SEARCH_BY';
 export const FIND_NEARBY_CITIES = 'FIND_NEARBY_CITIES';
 export const ADD_EPICENTER = 'ADD_EPICENTER';
+export const FIND_CLICKED_CITY = 'FIND_CLICKED_CITY';
 
 export function searchCity(name, numberOfCities) {
   const request = axios.post('/api/search', {
@@ -13,6 +14,16 @@ export function searchCity(name, numberOfCities) {
   });
   return {
     type: SEARCH_CITY,
+    payload: request
+  }
+}
+
+export function findClosestCity(coordinates) {
+  const request = axios.post('/api/findClosestCity', {
+    coordinates: coordinates
+  });
+  return {
+    type: FIND_CLICKED_CITY,
     payload: request
   }
 }
