@@ -61,18 +61,22 @@ app.post('/api/search', function(req, res) {
 app.post('/api/findClosestCity', function(req, res) {
   const coordinates = req.body.coordinates;
   var results = cities_1000;
-  results.sort(function(a,b) {
-    var distA = myFunctions.distance(coordinates[0], coordinates[1], a.coordinates[0], a.coordinates[1]);
-    var distB = myFunctions.distance(coordinates[0], coordinates[1], b.coordinates[0], b.coordinates[1]);
-    if(distA > distB) {
-      return 1;
-    }
-    if(distB > distA) {
-      return -1;
-    }
-    return 0;
+  var distances = results.map(function(obj) {
+    return myFunctions.distance(coordinates[0], coordinates[1], obj.coordinates[0], obj.coordinates[1]);
   });
-  res.send(results[0]);
+  function closestCity(inputArray) {
+    var k = 0;
+    var min = 1000;
+    for(var i = 0; i < inputArray.length; i++) {
+      if(inputArray[i] < min) {
+        min = inputArray[i];
+        k = i;
+      }
+    }
+    return k;
+  } 
+  var minIndex = closestCity(distances);
+  res.send(results[minIndex]);
 })
 
 app.post('/api/findNearbyCities', function(req, res) {
