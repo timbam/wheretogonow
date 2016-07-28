@@ -52,10 +52,10 @@ function renderWeather(cityData, index) {
 }
   return(
     <div className="weatherTable" >
-      <table className="table table-hover">
+      <table className="table table-hover table-s table-sm">
         <thead>
           <tr>
-            <th>City</th>
+            <th className="tdCityName" >City</th>
             {props.weather.nearbyCitiesWeather[0].weatherArray.map(renderDays)}
           </tr>
         </thead>

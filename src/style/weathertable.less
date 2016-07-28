@@ -1,5 +1,14 @@
 .weatherTable {
   overflow-x: scroll;
+  transform: rotateX(180deg);    
+  margin-top: 10px;
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: rgba(51, 122, 183, 0.24);
+  font-size: 0.95em;
+}
+.weatherTable .table {
+  transform: rotateX(180deg);  
 }
 
 td, th {
@@ -9,7 +18,9 @@ td, th {
 .tdCityName {
   vertical-align: middle;
   font-weight: bold;
-    
+}
+.btn {
+  font-size: 0.95em;
 }
 .btn-outline {
     background-color: transparent;
@@ -19,4 +30,7 @@ td, th {
     text-shadow: none;
     border-width: 2px;
     border-radius: 10px;
+}
+.table-s > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(163, 204, 255, 0.25);
 }

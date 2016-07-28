@@ -107,7 +107,12 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
  */
 gulp.task('styles', function() {
   return gulp.src('src/style/main.less')
-    .pipe(plumber())
+    .pipe(plumber({
+      errorHandler: function (err) {
+        console.log(err);
+        this.emit('end');
+      }
+    }))
     .pipe(less())
     .pipe(autoprefixer())
     .pipe(gulpif(production, cssmin()))

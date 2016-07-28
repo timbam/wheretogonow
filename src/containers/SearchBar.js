@@ -63,10 +63,14 @@ class SearchBar extends React.Component {
         <div className={sResultsClasses} >
           {this.props.weather.searchResults.length > 0 ? searchResults : null}
         </div>
-        <h4>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</h4>
-        <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
-        <h4>Number of cities to search for: <span className="rangeTitles">{this.state.numberOfCities}</span></h4>
-        <input type="range" min="3" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
+        <div className="radiusBox" >
+          <p>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</p>
+          <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
+        </div>
+        <div className="rangeBox" >
+          <p>Number of cities to search for: <span className="rangeTitles">{this.state.numberOfCities}</span></p>
+          <input type="range" min="3" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
+        </div>
       </div>
     );
   }
