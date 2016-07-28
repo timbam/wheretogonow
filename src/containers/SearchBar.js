@@ -51,7 +51,7 @@ class SearchBar extends React.Component {
       );
     });
     return(
-      <div className="SearchBar row">
+      <div className="SearchBar rowYo">
         <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
           <input 
           placeholder="Where are you now?"

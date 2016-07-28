@@ -1,31 +1,91 @@
 @import '../../node_modules/bootstrap/less/bootstrap';
-@import './search';
+@import './searchbar';
+@import './googlemap';
+@import './weathertable';
 
-td, th {
-  text-align: center;
-  vertical-align: middle;
-    
-}
-.tdCityName {
-  vertical-align: middle;
-  font-weight: bold;
-    
-}
+// .row {
+//     margin-left: -15px;
+//     margin-right: -15px;
+// }
 
-.googleMap {
-  width: 1000px;
-  height: 800px;
-}
-.btn-outline {
-    background-color: transparent;
-    color: inherit;
-    transition: all .1s;
-    background-image: none;
-    text-shadow: none;
-    border-width: 2px;
-    border-radius: 10px;
-}
 
 // .btn-primary.btn-outline {
 //     color: #2B669A;
 // }
+.googleMap {
+  margin: auto;
+}
+.rowYo {
+  margin: auto;
+}
+
+// Iphone 4
+@media screen and (max-width: 369px) {
+  .googleMap {
+    width: 280px;
+    height: 280px;
+  }
+  .rowYo {
+    width: 280px;
+  }
+}
+// Iphone 6
+@media screen and (min-width: 370px) and (max-width: 410px) {
+  .googleMap {
+    width: 335px;
+    height: 335px;
+  }
+  .rowYo {
+    width: 335px;
+  }
+}
+// Nexus 6, Iphone 6+
+@media screen and (min-width: 411px) and (max-width: 599px) {
+  .googleMap {
+    width: 370px;
+    height: 370px;
+  }
+  .rowYo {
+    width: 370px;
+  }
+}
+// Small tablets
+@media screen and (min-width: 600px) and (max-width: 749px) {
+  .googleMap {
+    width: 520px;
+    height: 520px;
+  }
+  .rowYo {
+    width: 520px;
+  }
+}
+// Ipad 1-4
+@media screen and (min-width: 750px) and (max-width: 999px) {
+  .googleMap {
+    width: 650px;
+    height: 650px;
+  }
+  .rowYo {
+    width: 650px;
+  }
+}
+// Big tablets / Small screens
+@media screen and (min-width: 1000px) and (max-width: 1299px) {
+  .googleMap {
+    width: 800px;
+    height: 800px;
+  }
+  .rowYo {
+    width: 800px;
+  }
+}
+// Normal PC screens
+@media screen and (min-width: 1300px) {
+  .googleMap {
+    width: 1200px;
+    height: 800px;
+  }
+  .rowYo {
+    width: 1200px;
+  }
+}

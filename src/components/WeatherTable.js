@@ -51,17 +51,19 @@ function renderWeather(cityData, index) {
     );
 }
   return(
-          <table className="col-lg-12 table table-hover">
-            <thead>
-              <tr>
-                <th>City</th>
-                {props.weather.nearbyCitiesWeather[0].weatherArray.map(renderDays)}
-              </tr>
-            </thead>
-            <tbody>
-              {props.weather.nearbyCitiesWeather.map(renderWeather)}
-            </tbody>
-          </table>
+    <div className="weatherTable" >
+      <table className="table table-hover">
+        <thead>
+          <tr>
+            <th>City</th>
+            {props.weather.nearbyCitiesWeather[0].weatherArray.map(renderDays)}
+          </tr>
+        </thead>
+        <tbody>
+          {props.weather.nearbyCitiesWeather.map(renderWeather)}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

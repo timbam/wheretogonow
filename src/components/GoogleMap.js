@@ -4,21 +4,18 @@ import { SYMBOLS } from '../database/constants';
 import {triggerEvent} from "react-google-maps/lib/utils";
 
 export default (props) => {
-  // console.log(props.weather);
+  console.log(props.weather);
   const {epicenter} = props.weather;
   const {nearbyCitiesWeather} = props.weather;
+
   function handleOnClick(e) {
     const coordinates = [e.latLng.lat(), e.latLng.lng()];
     props.findClosestCity(coordinates);
   }
   return (
-    <GoogleMapLoader
-      containerElement={ <div 
-        style={{
-          width: '1200px',
-          height: '800px'
-        }} /> 
-      } 
+    <GoogleMapLoader 
+      className="googleMap"
+      containerElement={ <div className="googleMap" /> } 
       googleMapElement={
         <GoogleMap 
         onClick={handleOnClick}
