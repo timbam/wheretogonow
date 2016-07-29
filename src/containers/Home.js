@@ -17,7 +17,9 @@ class Home extends React.Component {
 
   findClosestCity(coordinates) {
     this.props.findClosestCity(coordinates).then( () => {
-      this.props.fetchWeather(this.props.weather.clickedCity);
+      if(!_.find(this.props.weather.nearbyCitiesWeather, {_id: this.props.weather.clickedCity._id})) {
+           this.props.fetchWeather(this.props.weather.clickedCity);
+      }
     });
   }
 

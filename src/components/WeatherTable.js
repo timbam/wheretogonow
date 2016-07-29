@@ -39,7 +39,8 @@ function renderWeather(cityData, index) {
       return (
         <td key={index}>
         <img src={"/sym/b38/" + SYMBOLS[symbolNr-1] + ".png"}  /><br/>
-        {weather.maxTemperature.value.slice(0,weather.maxTemperature.value.indexOf('.'))} °C
+        {weather.maxTemperature.value.slice(0,weather.maxTemperature.value.indexOf('.'))} °C <br/>
+        <span style={{fontSize: '0.95em'}} >{weather.precipitation.value} mm</span>
         </td>
       );
     });

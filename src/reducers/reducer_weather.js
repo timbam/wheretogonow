@@ -19,6 +19,7 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_CLICKED_CITY:
       return { ...state, clickedCity: action.payload.data};
     case FETCH_WEATHER:
+     console.log(action.payload);
       var nState = {
         name: action.payload.data.name,
         _id: action.payload.data._id,
@@ -53,7 +54,10 @@ export default function(state = INITIAL_STATE , action) {
               weatherObj.symbol = item.location.symbol;
               weatherObj.from = dFrom;
               weatherObj.to = dTo;
-            }; 
+            }
+            if(item.location.precipitation) {
+              weatherObj.precipitation = item.location.precipitation;
+            } 
           };
           if(weatherObj.symbol && weatherObj.maxTemperature) {
             nState.weatherArray.push(weatherObj);
