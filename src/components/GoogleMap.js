@@ -12,6 +12,12 @@ export default (props) => {
     const coordinates = [e.latLng.lat(), e.latLng.lng()];
     props.findClosestCity(coordinates);
   }
+
+  function onMarkerClick(id) {
+    props.onMarkerClick(id);
+  }
+
+
   return (
     <GoogleMapLoader 
       className="googleMap"
@@ -25,6 +31,7 @@ export default (props) => {
             var {maxTemperature} = city.weatherArray[props.weather.dayIndex];
             return(
               <Marker 
+                onClick={() => {onMarkerClick(city._id)}}
                 key={index}
                 position={{lat: parseFloat(city.weatherArray[0].latitude), lng: parseFloat(city.weatherArray[0].longitude)}}
                 defaultAnimation={2}

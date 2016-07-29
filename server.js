@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.post('/api/getWeather', function(req, res) {
   var coordinates = req.body.coordinates;
   var cityName = req.body.name;
+  var id = req.body.id;
   yrno.locationforecastlts({
     lat: coordinates[0],
     lon: coordinates[1]
@@ -38,6 +39,7 @@ app.post('/api/getWeather', function(req, res) {
       explicitArray: false
     }).parseString(xml, function(err, json) {
         json.name = cityName;
+        json._id = id;
         res.send(json);
       });     
   });

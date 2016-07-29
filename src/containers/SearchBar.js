@@ -10,7 +10,7 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: '', radius: 300, numberOfCities: 8};
+    this.state = { term: '', radius: 300, numberOfCities: 5};
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onSetIndexToSortBy = this.onSetIndexToSortBy.bind(this);
@@ -69,7 +69,7 @@ class SearchBar extends React.Component {
         </div>
         <div className="rangeBox rBoxes" >
           <p>Number of cities: <span className="rangeTitles">{this.state.numberOfCities}</span></p>
-          <input type="range" min="3" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
+          <input type="range" min="1" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
         </div>
       </div>
     );

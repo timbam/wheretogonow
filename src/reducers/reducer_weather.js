@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER, FIND_CLICKED_CITY } from '../actions/index';
+import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER, FIND_CLICKED_CITY, REMOVE_CITY } from '../actions/index';
 
 const INITIAL_STATE = {
   searchResults: [], 
@@ -21,6 +21,7 @@ export default function(state = INITIAL_STATE , action) {
     case FETCH_WEATHER:
       var nState = {
         name: action.payload.data.name,
+        _id: action.payload.data._id,
         weatherArray: []
       };
       var previousDate = null;
@@ -66,6 +67,9 @@ export default function(state = INITIAL_STATE , action) {
         nearbyCitiesWeather: [ ...state.nearbyCitiesWeather, nState],
         searchResults: [] 
       };
+    case REMOVE_CITY:
+        const reducedArray =  state.nearbyCitiesWeather.filter(city=> city._id !== action.payload);
+        return {...state, nearbyCitiesWeather: reducedArray };
     case ADD_EPICENTER:
       return {...state, epicenter: action.payload};
     case INDEX_TO_SEARCH_BY:

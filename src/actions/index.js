@@ -6,6 +6,7 @@ export const INDEX_TO_SEARCH_BY = 'INDEX_TO_SEARCH_BY';
 export const FIND_NEARBY_CITIES = 'FIND_NEARBY_CITIES';
 export const ADD_EPICENTER = 'ADD_EPICENTER';
 export const FIND_CLICKED_CITY = 'FIND_CLICKED_CITY';
+export const REMOVE_CITY = 'REMOVE_CITY';
 
 export function searchCity(name, numberOfCities) {
   const request = axios.post('/api/search', {
@@ -43,7 +44,8 @@ export function findNearbyCities(cityObject, radius, numberOfCities) {
 export function fetchWeather(city) {
 const request = axios.post('/api/getWeather', {
     coordinates: city.coordinates,
-    name: city.name
+    name: city.name,
+    id: city._id
 });
   return {
     type: FETCH_WEATHER,
@@ -62,5 +64,12 @@ export function setIndexToSortBy(index) {
   return {
     type: INDEX_TO_SEARCH_BY,
     payload: index
+  }
+}
+
+export function removeCity(id) {
+  return {
+    type: REMOVE_CITY,
+    payload: id
   }
 }
