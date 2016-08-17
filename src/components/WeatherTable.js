@@ -10,8 +10,8 @@ export default (props) => {
       'btn-outline': true,
       'active': (props.weather.dayIndex == index)
     })
-      var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'];
+      var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
       var dFrom = new Date(weather.from);
       // 
       var numberEnding = function(date){
@@ -22,11 +22,12 @@ export default (props) => {
           default: return date + 'th';
         };
       };
+      // {numberEnding(dFrom.getDate())} of {months[dFrom.getMonth()]}
       return(
         <th key={index}> 
             <button className={buttonClasses} onClick={() => {props.filterByDay(index)}}>
             {days[dFrom.getDay()]} <br />
-            {numberEnding(dFrom.getDate())} of {months[dFrom.getMonth()]}  
+            {numberEnding(dFrom.getDate())}
             <span className="caret" ></span></button>
         </th>
       );
