@@ -2,32 +2,33 @@
   overflow-x: scroll;
   transform: rotateX(180deg);    
   margin-top: 10px;
-  border-style: solid;
-  border-width: 0.5px;
-  border-color: rgba(51, 122, 183, 0.24);
+  // margin-left: 100px;
+  border: 0.5px solid rgba(51, 122, 183, 0.24);
   font-size: 1em;
 }
-.weatherTable .table {
+.weatherTable table {
   transform: rotateX(180deg);  
 }
 
 td, th {
   text-align: center;
   vertical-align: middle;
+  width: 100px;
 }
 .tdCityName {
   vertical-align: middle;
   font-weight: bold;
+  // position: absolute;
+  left: 0;
 }
 .btn {
   font-size: 1em;
 }
 .btn-outline {
-    background-color: transparent;
-    color: inherit;
+  color: inherit;
     transition: all .1s;
-    background-image: none;
-    text-shadow: none;
+  background: transparent none;
+  text-shadow: none;
     border-width: 2px;
     border-radius: 10px;
 }

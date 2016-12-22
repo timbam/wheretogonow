@@ -16,7 +16,7 @@ ReactDOM.render(
     <Router history={browserHistory} >
       <Route component={App}>
         <Route path="/" component={Home} />
-      </Route> 
+      </Route> gi
     </Router>
   </Provider>
   , document.querySelector('.myApp'));

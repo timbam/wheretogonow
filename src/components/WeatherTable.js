@@ -47,28 +47,26 @@ function renderWeather(cityData, index) {
     });
     return(
         <tr key={index}>
-          <td className="tdCityName" >{cityData.name}</td>
+          <th className="tdCityName" >{cityData.name}</th>
           {tempArray}
         </tr>
     );
 }
   return(
-    <div className="weatherTable" >
-      <table className="table table-hover table-s table-sm">
-        <thead>
+      <div className="weatherTable" >
+        <table className="table table-hover table-s table-sm"> 
+         <thead>
           <tr>
             <th className="tdCityName" >City</th>
             {props.weather.nearbyCitiesWeather[0].weatherArray.map(renderDays)}
           </tr>
-        </thead>
-        <tbody>
-          {props.weather.nearbyCitiesWeather.map(renderWeather)}
-        </tbody>
-      </table>
-    </div>
+         </thead>
+          <tbody>
+            {props.weather.nearbyCitiesWeather.map(renderWeather)}
+          </tbody>
+        </table>
+      </div>
   );
 }
-
-
 
 

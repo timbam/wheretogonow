@@ -32,7 +32,7 @@ class Home extends React.Component {
     localStorage.setItem('nearbyCitiesWeather', JSON.stringify(this.props.weather.nearbyCitiesWeather));
     if(this.props.weather.nearbyCitiesWeather.length > 0){
       return(
-        <div className="rowYo home">
+        <div className="rowYo home">>
           <GoogleMap weather={this.props.weather} findClosestCity={this.findClosestCity.bind(this)} onMarkerClick={this.onMarkerClick.bind(this)} />
           <WeatherTable weather={this.props.weather} filterByDay={this.filterByDay.bind(this)} />
         </div>
