@@ -5,7 +5,6 @@ bundle.js
 npm-debug.log
 public/js
 public/css
-public/sym/b30
 public/sym/b100
 public/sym/b200
 public/sym/svg

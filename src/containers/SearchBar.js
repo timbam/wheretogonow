@@ -10,7 +10,7 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: '', radius: 300, numberOfCities: 5};
+    this.state = { term: '', radius: 300, numberOfCities: 5, isHidden: false, isBlurred: false};
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onSetIndexToSortBy = this.onSetIndexToSortBy.bind(this);
@@ -37,12 +37,30 @@ class SearchBar extends React.Component {
     this.props.setIndexToSortBy(index);
   }
 
+  onHide() {
+    if(this.state.isHidden){
+      this.setState({isHidden: false});
+    }else {
+      this.setState({isHidden: true});
+    }
+  }
+
+  onBlurInput() {
+    this.setState({isBlurred: true});
+  }
+  onFocusInput() {
+    this.setState({isBlurred: false})
+  }
+
   render(){
     var sResultsClasses = classNames({
         'searchResults': true,
          'col-lg-12': true,
-         'isHid': !(this.state.term.length > 0)
+         'isHid': !(this.state.term.length > 0) || this.state.isBlurred
     });
+    var hiddenClass = classNames({
+      'isHid': (this.state.isHidden)
+    })
     var searchResults = this.props.weather.searchResults.map(item => {
       return(
         <div key={item._id} >
@@ -52,24 +70,29 @@ class SearchBar extends React.Component {
     });
     return(
       <div className="SearchBar rowYo">
-        <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
-          <input 
-          placeholder="Where are you now?"
-          className="form-control"
-          value={this.state.term}
-          onChange={this.onInputChange}  
-          />
-        </form>
-        <div className={sResultsClasses} >
-          {this.props.weather.searchResults.length > 0 ? searchResults : null}
-        </div>
-        <div className="radiusBox rBoxes" >
-          <p>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</p>
-          <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
-        </div>
-        <div className="rangeBox rBoxes" >
-          <p>Number of cities: <span className="rangeTitles">{this.state.numberOfCities}</span></p>
-          <input type="range" min="1" max="12" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
+      <button className="hideButton" onClick={this.onHide.bind(this)}>{this.state.isHidden ? 'Show' : 'Hide'} <span className="glyphicon glyphicon-chevron-down"></span></button>
+        <div className={hiddenClass}>
+          <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
+            <input 
+            placeholder="Where are you now?"
+            className="form-control"
+            value={this.state.term}
+            onChange={this.onInputChange}  
+            onBlur={this.onBlurInput.bind(this)}
+            onFocus={this.onFocusInput.bind(this)}
+            />
+          </form>
+          <div className={sResultsClasses} >
+            {this.props.weather.searchResults.length > 0 ? searchResults : null}
+          </div>
+          <div className="radiusBox rBoxes" >
+            <p>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</p>
+            <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
+          </div>
+          <div className="rangeBox rBoxes" >
+            <p>Number of cities: <span className="rangeTitles">{this.state.numberOfCities}</span></p>
+            <input type="range" min="1" max="9" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
+          </div>
         </div>
       </div>
     );

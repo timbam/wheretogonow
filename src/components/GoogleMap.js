@@ -17,7 +17,6 @@ export default (props) => {
     props.onMarkerClick(id);
   }
 
-
   return (
     <GoogleMapLoader 
       className="googleMap"
@@ -36,12 +35,12 @@ export default (props) => {
                 position={{lat: parseFloat(city.weatherArray[0].latitude), lng: parseFloat(city.weatherArray[0].longitude)}}
                 defaultAnimation={2}
                 icon={"/sym/b48/" + SYMBOLS[Number(city.weatherArray[props.weather.dayIndex].symbol.number)-1] + ".png"}
-                // label={maxTemperature.value.slice(0, maxTemperature.value.indexOf('.')) + ' °C'}
+                label={(index + 1).toString()}
               />
             );
           })}
         </GoogleMap>
-      } 
+      }
     />
   );
 }

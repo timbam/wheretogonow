@@ -32,6 +32,99 @@ td, th {
     border-width: 2px;
     border-radius: 10px;
 }
+
 .table-s > tbody > tr:nth-of-type(odd) {
     background-color: rgba(163, 204, 255, 0.25);
+}
+
+// Iphone 4
+@media screen and (max-width: 369px) {
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td
+{
+  padding: 0;
+}
+.weatherTable {
+  font-size: 0.7em;
+}
+.btn {
+  padding: 1px;
+}
+}
+// Iphone 6
+@media screen and (min-width: 370px) and (max-width: 410px) {
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td
+{
+  padding: 0;
+}
+.weatherTable {
+  font-size: 0.7em;
+}
+.btn {
+  padding: 1px;
+}
+}
+// Nexus 6, Iphone 6+
+@media screen and (min-width: 411px) and (max-width: 599px) {
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td
+{
+  padding: 0;
+}
+.weatherTable {
+  font-size: 0.7em;
+}
+.btn {
+  padding: 1px;
+}
+}
+// Small tablets
+@media screen and (min-width: 600px) and (max-width: 749px) {
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td
+{
+  padding: 0;
+}
+.weatherTable {
+  font-size: 0.8em;
+}
+.btn {
+  padding: 3px 6px 3px 6px;
+}
+}
+// Ipad 1-4
+@media screen and (min-width: 750px) and (max-width: 999px) {
+.table > tbody > tr > th,
+.table > thead > tr > th
+{
+  padding: 0;
+}
+.weatherTable {
+  font-size: 0.8em;
+}
+}
+// Big tablets / Small screens
+@media screen and (min-width: 1000px) and (max-width: 1299px) {
+.table > tbody > tr > th,
+.table > thead > tr > th
+{
+  padding: 4px;
+}
+}
+// Normal Laptop screens
+@media screen and (min-width: 1300px) {
+
+}
+// Normal PC screens
+@media screen and (min-width: 1600px) {
+
 }

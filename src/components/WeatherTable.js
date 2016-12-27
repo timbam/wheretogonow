@@ -33,13 +33,18 @@ export default (props) => {
       );
   } 
 function renderWeather(cityData, index) {
+    if(window.innerWidth < 600) {
+      var weatherIcon = "/sym/b30/";
+    }else {
+      var weatherIcon = "sym/b38/";
+    }
     const tempArray = cityData.weatherArray.map((weather, index) => {
       if(cityData.weatherArray[index].symbol) {
         var symbolNr = Number(cityData.weatherArray[index].symbol.number);
       };
       return (
         <td key={index}>
-        <img src={"/sym/b38/" + SYMBOLS[symbolNr-1] + ".png"}  /><br/>
+        <img src={weatherIcon + SYMBOLS[symbolNr-1] + ".png"}  /><br/>
         {weather.maxTemperature.value.slice(0,weather.maxTemperature.value.indexOf('.'))} °C <br/>
         <span style={{fontSize: '0.95em'}} >{weather.precipitation.value} mm</span>
         </td>
@@ -47,7 +52,9 @@ function renderWeather(cityData, index) {
     });
     return(
         <tr key={index}>
-          <th className="tdCityName" >{cityData.name}</th>
+          <th className="tdCityName">{cityData.name} <br/>
+          {index + 1}
+          </th>
           {tempArray}
         </tr>
     );

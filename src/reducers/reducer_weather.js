@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   nearbyCities: [], 
   nearbyCitiesWeather: JSON.parse(localStorage.getItem('nearbyCitiesWeather')) || [], 
   clickedCity: null, 
-  epicenter: JSON.parse(localStorage.getItem('epicenter')) || null, 
+  epicenter: JSON.parse(localStorage.getItem('epicenter')) || {coordinates: [48.8, 2.35]}, 
   dayIndex: 0 
 };
 
@@ -66,9 +66,10 @@ export default function(state = INITIAL_STATE , action) {
           }
         }
       });
+
       return { 
         ...state, 
-        nearbyCitiesWeather: [ ...state.nearbyCitiesWeather, nState],
+        nearbyCitiesWeather: [ ...state.nearbyCitiesWeather, nState].slice(0,9),
         searchResults: [] 
       };
     case REMOVE_CITY:
