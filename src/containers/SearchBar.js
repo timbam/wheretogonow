@@ -64,7 +64,7 @@ class SearchBar extends React.Component {
     var searchResults = this.props.weather.searchResults.map(item => {
       return(
         <div key={item._id} >
-          <button onClick={this.onfetchWeather.bind(this, item)} className="btn btn-default">{item.name} ({item.country_code})</button>
+          <button onMouseDown={this.onfetchWeather.bind(this, item)} className="btn btn-default">{item.name} ({item.country_code})</button>
         </div>
       );
     });
@@ -78,8 +78,8 @@ class SearchBar extends React.Component {
             className="form-control"
             value={this.state.term}
             onChange={this.onInputChange}  
-            onBlur={this.onBlurInput.bind(this)}
             onFocus={this.onFocusInput.bind(this)}
+            onBlur={this.onBlurInput.bind(this)}
             />
           </form>
           <div className={sResultsClasses} >
