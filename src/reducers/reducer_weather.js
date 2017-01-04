@@ -19,7 +19,7 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_CLICKED_CITY:
       return { ...state, clickedCity: action.payload.data};
     case FETCH_WEATHER:
-     console.log(action.payload);
+     // console.log(action.payload);
       var nState = {
         name: action.payload.data.name,
         _id: action.payload.data._id,

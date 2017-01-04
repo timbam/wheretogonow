@@ -25,7 +25,7 @@ export default (props) => {
         <GoogleMap 
         onClick={handleOnClick}
         defaultZoom={7} 
-        defaultCenter={{lat: epicenter.coordinates[0], lng: epicenter.coordinates[1] }} > 
+        center={{lat: epicenter.coordinates[0], lng: epicenter.coordinates[1] }} >
           {nearbyCitiesWeather.map((city, index) => {
             var {maxTemperature} = city.weatherArray[props.weather.dayIndex];
             return(
