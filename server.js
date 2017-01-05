@@ -22,7 +22,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(cookieParser()); 
 
 app.post('/api/getWeather', function(req, res) {
   var coordinates = req.body.coordinates;
@@ -40,6 +39,7 @@ app.post('/api/getWeather', function(req, res) {
     }).parseString(xml, function(err, json) {
         json.name = cityName;
         json._id = id;
+        json.coordinates = coordinates;
         res.send(json);
       });     
   });
@@ -140,7 +140,6 @@ res.send(FindCities(cityObject, radius, numberOfCities));
 
 // other requests
 app.get('*', function (req, res) {
-  // reactCookie.plugToRequest(req, res);
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 

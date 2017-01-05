@@ -19,12 +19,21 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_CLICKED_CITY:
       return { ...state, clickedCity: action.payload.data};
     case FETCH_WEATHER:
-     // console.log(action.payload);
+    // Creating a new city-object with weather
       var nState = {
         name: action.payload.data.name,
         _id: action.payload.data._id,
+        coordinates: action.payload.data.coordinates,
         weatherArray: []
       };
+      // Checking if the city is already in the state. If it is, it's deleted so that it won't get duplicated.
+      var index = state.nearbyCitiesWeather.map(function(x) {return x._id; }).indexOf(nState._id);
+      if(index > -1){
+        var newArray = state.nearbyCitiesWeather.slice(0,index).concat(state.nearbyCitiesWeather.slice(index+1));
+      }else {
+        var newArray = state.nearbyCitiesWeather;
+      }
+      // Taking weatherdata from the payload, rearranging etc..
       var previousDate = null;
       var weatherObj = {};
       action.payload.data.weatherdata.product.time.map((item, index) =>{
@@ -66,10 +75,9 @@ export default function(state = INITIAL_STATE , action) {
           }
         }
       });
-
       return { 
         ...state, 
-        nearbyCitiesWeather: [ ...state.nearbyCitiesWeather, nState].slice(0,9),
+        nearbyCitiesWeather: [ ...newArray, nState].slice(0,9),
         searchResults: [] 
       };
     case REMOVE_CITY:

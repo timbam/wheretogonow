@@ -11,6 +11,16 @@ class Home extends React.Component {
     super(props);
   }
 
+  componentWillMount() {
+    if(typeof this.props.weather.nearbyCitiesWeather[0] != 'undefined'){
+      var today = new Date();
+      var dateOfData = new Date(this.props.weather.nearbyCitiesWeather[0].weatherArray[0].from);
+      if(dateOfData.getTime() + 4e7 < today.getTime()){
+        this.props.weather.nearbyCitiesWeather.map(city => this.props.fetchWeather(city))
+      }
+    }
+  }
+
   filterByDay(index){
     this.props.setIndexToSortBy(index);
   }
