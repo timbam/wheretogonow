@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
-import { setIndexToSortBy, findClosestCity, fetchWeather, removeCity } from '../actions/index';
+import { setIndexToSortBy, findClosestCity, fetchWeather, removeCity, addMap, addEpicenterToState } from '../actions/index';
 import _ from 'lodash';
 import WeatherTable from '../components/WeatherTable';
-import GoogleMap from '../components/GoogleMap';
+import GettingStartedGoogleMap from '../components/GettingStartedGoogleMap';
 
 class Home extends React.Component {
   constructor(props) {
@@ -36,6 +36,20 @@ class Home extends React.Component {
   onMarkerClick(id) {
     this.props.removeCity(id);
   }
+  onMapLoad(map){
+    if(map){
+      this._mapComponent = map;
+    }
+  }
+
+  onCenterChanged(){
+    if(this._mapComponent){
+      this.props.addEpicenterToState({
+        coordinates: [this._mapComponent.getCenter().lat(), this._mapComponent.getCenter().lng()]
+      });
+    }
+  }
+
 
   render(){
     localStorage.setItem('epicenter', JSON.stringify(this.props.weather.epicenter));
@@ -43,14 +57,32 @@ class Home extends React.Component {
     if(this.props.weather.nearbyCitiesWeather.length > 0){
       return(
         <div className="rowYo home">
-          <GoogleMap weather={this.props.weather} findClosestCity={this.findClosestCity.bind(this)} onMarkerClick={this.onMarkerClick.bind(this)} />
+          <GettingStartedGoogleMap
+            className="googleMap"
+            containerElement={<div className="googleMap" />}
+            mapElement={<div style={{height:`100%`}} />}
+            weather={this.props.weather}
+            onCenterChanged={this.onCenterChanged.bind(this)}
+            findClosestCity={this.findClosestCity.bind(this)}
+            onMarkerClick={this.onMarkerClick.bind(this)}
+            onMapLoad={this.onMapLoad.bind(this)}
+            />
           <WeatherTable weather={this.props.weather} filterByDay={this.filterByDay.bind(this)} />
         </div>
       );
     };
     return(
       <div className="rowYo home">
-        <GoogleMap weather={this.props.weather} findClosestCity={this.findClosestCity.bind(this)} onMarkerClick={this.onMarkerClick.bind(this)} />
+        <GettingStartedGoogleMap
+          className="googleMap"
+          containerElement={<div className="googleMap" />}
+          mapElement={<div style={{height:`100%`}} />}
+          weather={this.props.weather}
+          onCenterChanged={this.onCenterChanged.bind(this)}
+          findClosestCity={this.findClosestCity.bind(this)}
+          onMarkerClick={this.onMarkerClick.bind(this)}
+          onMapLoad={this.onMapLoad.bind(this)}
+          />
       </div>
     );
   };
@@ -62,7 +94,7 @@ function mapStateToProps({ weather }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators( { setIndexToSortBy, findClosestCity, fetchWeather, removeCity }, dispatch);
+  return bindActionCreators( { setIndexToSortBy, findClosestCity, fetchWeather, removeCity, addMap, addEpicenterToState }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

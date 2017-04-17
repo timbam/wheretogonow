@@ -1,13 +1,14 @@
 import _ from 'lodash';
 import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER, FIND_CLICKED_CITY, REMOVE_CITY } from '../actions/index';
 
-const INITIAL_STATE = {
-  searchResults: [], 
-  nearbyCities: [], 
-  nearbyCitiesWeather: JSON.parse(localStorage.getItem('nearbyCitiesWeather')) || [], 
-  clickedCity: null, 
-  epicenter: JSON.parse(localStorage.getItem('epicenter')) || {coordinates: [48.8, 2.35]}, 
-  dayIndex: 0 
+const INITIAL_STATE ={
+  searchResults: [],
+  nearbyCities: [],
+  nearbyCitiesWeather: JSON.parse(localStorage.getItem('nearbyCitiesWeather')) || [],
+  clickedCity: null,
+  epicenter: JSON.parse(localStorage.getItem('epicenter')) || {coordinates: [48.8, 2.35]},
+  dayIndex: 0,
+  map: {}
 };
 
 export default function(state = INITIAL_STATE , action) {
@@ -19,6 +20,7 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_CLICKED_CITY:
       return { ...state, clickedCity: action.payload.data};
     case FETCH_WEATHER:
+    console.log(action.payload.data);
     // Creating a new city-object with weather
       var nState = {
         name: action.payload.data.name,
@@ -66,7 +68,7 @@ export default function(state = INITIAL_STATE , action) {
             }
             if(item.location.precipitation) {
               weatherObj.precipitation = item.location.precipitation;
-            } 
+            }
           };
           if(weatherObj.symbol && weatherObj.maxTemperature) {
             nState.weatherArray.push(weatherObj);
@@ -75,10 +77,10 @@ export default function(state = INITIAL_STATE , action) {
           }
         }
       });
-      return { 
-        ...state, 
+      return {
+        ...state,
         nearbyCitiesWeather: [ ...newArray, nState].slice(0,9),
-        searchResults: [] 
+        searchResults: []
       };
     case REMOVE_CITY:
         const reducedArray =  state.nearbyCitiesWeather.filter(city=> city._id !== action.payload);
@@ -86,11 +88,9 @@ export default function(state = INITIAL_STATE , action) {
     case ADD_EPICENTER:
       return {...state, epicenter: action.payload};
     case INDEX_TO_SEARCH_BY:
-    var nearbyCitiesByWeatherOrdered = _.orderBy(state.nearbyCitiesWeather, ['weatherArray[' + action.payload + '].maxTemperature.value'], ['desc']);
+      var nearbyCitiesByWeatherOrdered = _.orderBy(state.nearbyCitiesWeather, ['weatherArray[' + action.payload + '].maxTemperature.value'], ['desc']);
       return { ...state, nearbyCitiesWeather: nearbyCitiesByWeatherOrdered, dayIndex: action.payload};
   }
 
   return state;
 }
-
-

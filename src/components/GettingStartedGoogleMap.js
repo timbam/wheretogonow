@@ -1,9 +1,9 @@
 import React from 'react';
-import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { SYMBOLS } from '../database/constants';
-import {triggerEvent} from "react-google-maps/lib/utils";
 
-export default (props) => {
+const GettingStartedGoogleMap = withGoogleMap(props => {
+  let centerChangedTimeout;
   console.log(props.weather);
   const {epicenter} = props.weather;
   const {nearbyCitiesWeather} = props.weather;
@@ -13,24 +13,26 @@ export default (props) => {
     props.findClosestCity(coordinates);
   }
 
-  function onMarkerClick(id) {
-    props.onMarkerClick(id);
+  function onCenterChanged(){
+    if(centerChangedTimeout){
+      clearTimeout(centerChangedTimeout);
+      centerChangedTimeout = null;
+    }
+    centerChangedTimeout = setTimeout(props.onCenterChanged, 100);
   }
 
   return (
-    <GoogleMapLoader 
-      className="googleMap"
-      containerElement={ <div className="googleMap" /> } 
-      googleMapElement={
-        <GoogleMap 
+        <GoogleMap
+        ref={props.onMapLoad}
         onClick={handleOnClick}
-        defaultZoom={7} 
+        onCenterChanged={onCenterChanged}
+        defaultZoom={7}
         center={{lat: epicenter.coordinates[0], lng: epicenter.coordinates[1] }} >
           {nearbyCitiesWeather.map((city, index) => {
             var {maxTemperature} = city.weatherArray[props.weather.dayIndex];
             return(
-              <Marker 
-                onClick={() => {onMarkerClick(city._id)}}
+              <Marker
+                onClick={() => {props.onMarkerClick(city._id)}}
                 key={index}
                 position={{lat: parseFloat(city.weatherArray[0].latitude), lng: parseFloat(city.weatherArray[0].longitude)}}
                 defaultAnimation={2}
@@ -38,9 +40,9 @@ export default (props) => {
                 label={(index + 1).toString()}
               />
             );
-          })}
+          })
+        }
         </GoogleMap>
-      }
-    />
   );
-}
+});
+export default GettingStartedGoogleMap;

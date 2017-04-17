@@ -27,7 +27,7 @@ class SearchBar extends React.Component {
 
   onfetchWeather(cityObject) {
     this.setState({term: ''});
-    this.props.addEpicenterToState(cityObject);
+    // this.props.addEpicenterToState(cityObject);
     this.props.findNearbyCities(cityObject, this.state.radius, this.state.numberOfCities).then(() =>
       this.props.weather.nearbyCities.map(city => this.props.fetchWeather(city))
     );
@@ -73,11 +73,11 @@ class SearchBar extends React.Component {
       <button className="hideButton" onClick={this.onHide.bind(this)}>{this.state.isHidden ? 'Show' : 'Hide'} <span className="glyphicon glyphicon-chevron-down"></span></button>
         <div className={hiddenClass}>
           <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
-            <input 
+            <input
             placeholder="Where are you now?"
             className="form-control"
             value={this.state.term}
-            onChange={this.onInputChange}  
+            onChange={this.onInputChange}
             onFocus={this.onFocusInput.bind(this)}
             onBlur={this.onBlurInput.bind(this)}
             />
