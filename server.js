@@ -5,8 +5,6 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-// var cookieParser = require('cookie-parser');
-// var reactCookie = require('react-cookie');
 var app = express();
 // yr.no stuff
 var yrno = require('yr.no-interface'),
@@ -41,7 +39,7 @@ app.post('/api/getWeather', function(req, res) {
         json._id = id;
         json.coordinates = coordinates;
         res.send(json);
-      });     
+      });
   });
 });
 
