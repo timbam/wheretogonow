@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var app = express();
 // yr.no stuff
 var yrno = require('yr.no-interface'),
-LOC_VER = 1.2;
+LOC_VER = 1.3;
 var xml2js = require('xml2js');
 const cities = require('./src/database/cities15000.json');
 const cities_1000 = require('./src/database/cities1000.json');

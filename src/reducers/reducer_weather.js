@@ -20,7 +20,7 @@ export default function(state = INITIAL_STATE , action) {
     case FIND_CLICKED_CITY:
       return { ...state, clickedCity: action.payload.data};
     case FETCH_WEATHER:
-    console.log(action.payload.data);
+    // console.log(action.payload.data.weatherdata.product);
     // Creating a new city-object with weather
       var nState = {
         name: action.payload.data.name,

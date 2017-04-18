@@ -3,8 +3,8 @@ import { withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import { SYMBOLS } from '../database/constants';
 
 const GettingStartedGoogleMap = withGoogleMap(props => {
+  // console.log(props.weather);
   let centerChangedTimeout;
-  console.log(props.weather);
   const {epicenter} = props.weather;
   const {nearbyCitiesWeather} = props.weather;
 
