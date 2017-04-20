@@ -10,7 +10,7 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: '', radius: 300, numberOfCities: 5, isHidden: false, isBlurred: false};
+    this.state = { term: '', radius: 300, numberOfCities: 5, isHidden: false, isBlurred: false, btnFocused: false, btnID: -1};
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onSetIndexToSortBy = this.onSetIndexToSortBy.bind(this);
@@ -26,8 +26,11 @@ class SearchBar extends React.Component {
   }
 
   onfetchWeather(cityObject) {
-    this.setState({term: ''});
-    // this.props.addEpicenterToState(cityObject);
+    this.setState({
+      term: '',
+      btnID: -1
+    });
+    this.props.addEpicenterToState(cityObject);
     this.props.findNearbyCities(cityObject, this.state.radius, this.state.numberOfCities).then(() =>
       this.props.weather.nearbyCities.map(city => this.props.fetchWeather(city))
     );
@@ -51,20 +54,81 @@ class SearchBar extends React.Component {
   onFocusInput() {
     this.setState({isBlurred: false})
   }
+  onBlurSearchResults(){
+    this.setState({
+      btnFocused: false
+    });
+  }
+  onKeyDown(e) {
+    console.log(e.key);
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        var newId = this.state.btnID + 1;
+        var btn = this.refs['button' + newId];
+        console.log(btn);
+        if(!btn){
+          this.refs.inputForm.focus();
+          this.setState({
+            btnID: -1
+          });
+          return;
+        }
+        btn.focus();
+        this.setState({
+          btnFocused: true,
+          btnID: this.state.btnID + 1
+        });
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        var newId = this.state.btnID - 1;
+        var btn = this.refs['button' + newId];
+        console.log(btn);
+        if(!btn){
+          this.refs.inputForm.focus();
+          this.setState({
+            btnID: -1
+          });
+          return;
+        }
+        btn.focus();
+        this.setState({
+          btnFocused: true,
+          btnID: this.state.btnID - 1
+        });
+      break;
+      case "Enter":
+        if(this.props.weather.searchResults[this.state.btnID]){
+          this.onfetchWeather(this.props.weather.searchResults[this.state.btnID]);
+        }
+      break;
+      case "Escape":
+        this.setState({
+          btnFocused: false
+        });
+      default:
+
+    }
+  }
 
   render(){
     var sResultsClasses = classNames({
         'searchResults': true,
          'col-lg-12': true,
-         'isHid': !(this.state.term.length > 0) || this.state.isBlurred
+         'isHid': !(this.state.term.length > 0) || (this.state.isBlurred && !this.state.btnFocused)
     });
     var hiddenClass = classNames({
       'isHid': (this.state.isHidden)
     })
-    var searchResults = this.props.weather.searchResults.map(item => {
+    var searchResults = this.props.weather.searchResults.map((item, index) => {
       return(
         <div key={item._id} >
-          <button onMouseDown={this.onfetchWeather.bind(this, item)} className="btn btn-default">{item.name} ({item.country_code})</button>
+          <button ref={"button" + index}
+            onKeyDown={this.onKeyDown.bind(this)}
+            onMouseDown={this.onfetchWeather.bind(this)}
+            className="btn btn-default">{item.name} ({item.country_code})
+          </button>
         </div>
       );
     });
@@ -74,15 +138,17 @@ class SearchBar extends React.Component {
         <div className={hiddenClass}>
           <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
             <input
+            ref="inputForm"
             placeholder="Where are you now?"
             className="form-control"
             value={this.state.term}
             onChange={this.onInputChange}
             onFocus={this.onFocusInput.bind(this)}
             onBlur={this.onBlurInput.bind(this)}
+            onKeyDown={this.onKeyDown.bind(this)}
             />
           </form>
-          <div className={sResultsClasses} >
+          <div className={sResultsClasses} onBlur={this.onBlurSearchResults.bind(this)} >
             {this.props.weather.searchResults.length > 0 ? searchResults : null}
           </div>
           <div className="radiusBox rBoxes" >

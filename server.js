@@ -46,6 +46,7 @@ app.post('/api/getWeather', function(req, res) {
 
 app.post('/api/search', function(req, res) {
     var name = req.body.name;
+    if(name == "") res.send([]);
     var numberOfCities = req.body.numberOfCities;
     var results = [];
     name = name.toUpperCase();
