@@ -30,6 +30,7 @@ class SearchBar extends React.Component {
       term: '',
       btnID: -1
     });
+    console.log(cityObject);
     this.props.addEpicenterToState(cityObject);
     this.props.findNearbyCities(cityObject, this.state.radius, this.state.numberOfCities).then(() =>
       this.props.weather.nearbyCities.map(city => this.props.fetchWeather(city))
@@ -59,45 +60,32 @@ class SearchBar extends React.Component {
       btnFocused: false
     });
   }
+  onArrowUpOrDown(newId){
+    var btn = this.refs['button' + newId];
+    console.log(btn);
+    if(!btn){
+      this.refs.inputForm.focus();
+      this.setState({
+        btnID: -1
+      });
+      return;
+    }
+    btn.focus();
+    this.setState({
+      btnFocused: true,
+      btnID: newId
+    });
+  }
   onKeyDown(e) {
-    console.log(e.key);
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        var newId = this.state.btnID + 1;
-        var btn = this.refs['button' + newId];
-        console.log(btn);
-        if(!btn){
-          this.refs.inputForm.focus();
-          this.setState({
-            btnID: -1
-          });
-          return;
-        }
-        btn.focus();
-        this.setState({
-          btnFocused: true,
-          btnID: this.state.btnID + 1
-        });
+        this.onArrowUpOrDown(this.state.btnID + 1);
         break;
       case "ArrowUp":
         e.preventDefault();
-        var newId = this.state.btnID - 1;
-        var btn = this.refs['button' + newId];
-        console.log(btn);
-        if(!btn){
-          this.refs.inputForm.focus();
-          this.setState({
-            btnID: -1
-          });
-          return;
-        }
-        btn.focus();
-        this.setState({
-          btnFocused: true,
-          btnID: this.state.btnID - 1
-        });
-      break;
+        this.onArrowUpOrDown(this.state.btnID - 1);
+        break;
       case "Enter":
         if(this.props.weather.searchResults[this.state.btnID]){
           this.onfetchWeather(this.props.weather.searchResults[this.state.btnID]);
@@ -126,7 +114,7 @@ class SearchBar extends React.Component {
         <div key={item._id} >
           <button ref={"button" + index}
             onKeyDown={this.onKeyDown.bind(this)}
-            onMouseDown={this.onfetchWeather.bind(this)}
+            onMouseDown={this.onfetchWeather.bind(this, item)}
             className="btn btn-default">{item.name} ({item.country_code})
           </button>
         </div>
