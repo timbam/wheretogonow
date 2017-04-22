@@ -1,4 +1,11 @@
 @import './inputRange';
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
+  font-size: 0.9em;
+}
 .hideButton {
   width: 100%;
   background-color: white;
@@ -17,6 +24,23 @@
 .input-group {
   padding-top: 2px;
   width: 100%;
+  display: inline-flex;
+}
+.input-group .btn-info {
+  float: right;
+  border-radius: 0;
+  // background-color: #a3ccff;
+}
+.infoBox {
+  background-color: white;
+  border-style: solid;
+  border-radius: 1px;
+  border-width: 0.15em;
+  border-color: #5bc0de;
+  z-index: 3;
+  position: absolute;
+  right: 0;
+  top: 5vh;
 }
 .searchResults {
   background-color: white;
@@ -26,7 +50,6 @@
   width:  100%;
   z-index: 2;
 }
-
 .btn-default {
   border-width:   0;
   width:  100%;

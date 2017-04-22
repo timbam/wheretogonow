@@ -75,7 +75,7 @@ export default (props) => {
             </tbody>
           </table>
         </div>
-      <p className="linkFromYr">Weather data taken from <a href="www.yr.no">yr.no</a></p>
+      <p className="linkFromYr">Weather data taken from <a target="_blank" href="http://www.yr.no">yr.no</a></p>
       </div>
     );
   }else{
