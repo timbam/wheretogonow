@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
 import { searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState } from '../actions/index';
 import _ from 'lodash';
-import ReactSlider from 'react-slider';
+import Slider from 'rc-slider';
 import classNames from 'classnames';
 
 class SearchBar extends React.Component {
@@ -141,11 +141,11 @@ class SearchBar extends React.Component {
           </div>
           <div className="radiusBox rBoxes" >
             <p>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</p>
-            <input type="range" min="100" max="600" value={this.state.radius} onChange={(e) => this.setState({radius: e.target.value})} />
+            <Slider step={10} max={600}  min={100} value={this.state.radius} onChange={radius => this.setState({radius})} />
           </div>
           <div className="rangeBox rBoxes" >
             <p>Number of cities: <span className="rangeTitles">{this.state.numberOfCities}</span></p>
-            <input type="range" min="1" max="9" value={this.state.numberOfCities} onChange={(e) => this.setState({numberOfCities:e.target.value})} />
+            <Slider min={1} max={9} value={this.state.numberOfCities} onChange={(numberOfCities) => this.setState({numberOfCities})} />
           </div>
         </div>
       </div>

@@ -54,7 +54,6 @@ class Home extends React.Component {
   render(){
     localStorage.setItem('epicenter', JSON.stringify(this.props.weather.epicenter));
     localStorage.setItem('nearbyCitiesWeather', JSON.stringify(this.props.weather.nearbyCitiesWeather));
-    if(this.props.weather.nearbyCitiesWeather.length > 0){
       return(
         <div className="rowYo home">
           <GettingStartedGoogleMap
@@ -71,21 +70,6 @@ class Home extends React.Component {
         </div>
       );
     };
-    return(
-      <div className="rowYo home">
-        <GettingStartedGoogleMap
-          className="googleMap"
-          containerElement={<div className="googleMap" />}
-          mapElement={<div style={{height:`100%`}} />}
-          weather={this.props.weather}
-          onCenterChanged={this.onCenterChanged.bind(this)}
-          findClosestCity={this.findClosestCity.bind(this)}
-          onMarkerClick={this.onMarkerClick.bind(this)}
-          onMapLoad={this.onMapLoad.bind(this)}
-          />
-      </div>
-    );
-  };
 }
 
 
