@@ -24,9 +24,14 @@ const GettingStartedGoogleMap = withGoogleMap(props => {
   return (
         <GoogleMap
         ref={props.onMapLoad}
-        onClick={handleOnClick}
+        onDblClick={handleOnClick}
         onCenterChanged={onCenterChanged}
         defaultZoom={7}
+        options= {{
+          disableDoubleClickZoom: true,
+          mapTypeControl: false,
+          streetViewControl: false
+        }}
         center={{lat: epicenter.coordinates[0], lng: epicenter.coordinates[1] }} >
           {nearbyCitiesWeather.map((city, index) => {
             var {maxTemperature} = city.weatherArray[props.weather.dayIndex];
