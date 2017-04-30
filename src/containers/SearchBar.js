@@ -31,7 +31,7 @@ class SearchBar extends React.Component {
       term: '',
       btnID: -1
     });
-    console.log(cityObject);
+    // console.log(cityObject);
     this.props.addEpicenterToState(cityObject);
     this.props.findNearbyCities(cityObject, this.state.radius, this.state.numberOfCities).then(() =>
       this.props.weather.nearbyCities.map(city => this.props.fetchWeather(city))
@@ -75,7 +75,6 @@ class SearchBar extends React.Component {
   }
   onArrowUpOrDown(newId){
     var btn = this.refs['button' + newId];
-    console.log(btn);
     if(!btn){
       this.refs.inputForm.focus();
       this.setState({
