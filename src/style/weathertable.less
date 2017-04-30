@@ -1,13 +1,13 @@
 .weatherTable {
   overflow-x: scroll;
-  transform: rotateX(180deg);    
+  transform: rotateX(180deg);
   margin-top: 10px;
   // margin-left: 100px;
   border: 0.5px solid rgba(51, 122, 183, 0.24);
   font-size: 1em;
 }
 .weatherTable table {
-  transform: rotateX(180deg);  
+  transform: rotateX(180deg);
 }
 
 td, th {
@@ -34,8 +34,24 @@ td, th {
 }
 
 .table-s > tbody > tr:nth-of-type(odd) {
-    background-color: rgba(163, 204, 255, 0.25);
+    background-color: fade(@teal, 20%);
 }
+.btn-primary {
+  border-color: @teal !important;
+  &:hover, &:focus, &:active{
+    background-color: @teal !important;
+    border-color: @teal;
+  }
+}
+.btn-primary.active{
+  border-color: @teal;
+  background-color: @teal;
+  &:hover, &:focus{
+    border-color: @teal;
+    background-color: @teal;
+  }
+}
+
 
 // Iphone 4
 @media screen and (max-width: 369px) {
@@ -49,7 +65,7 @@ td, th {
 .weatherTable {
   font-size: 0.7em;
 }
-.btn {
+.btn-primary {
   padding: 1px;
 }
 }
@@ -120,11 +136,11 @@ td, th {
   padding: 4px;
 }
 }
-// Normal Laptop screens
-@media screen and (min-width: 1300px) {
-
-}
-// Normal PC screens
-@media screen and (min-width: 1600px) {
-
-}
+// // Normal Laptop screens
+// @media screen and (min-width: 1300px) {
+//
+// }
+// // Normal PC screens
+// @media screen and (min-width: 1600px) {
+//
+// }
