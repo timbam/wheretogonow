@@ -55,9 +55,9 @@ export default function(state = INITIAL_STATE , action) {
             }
           }else if(dFrom.getHours() == 18 && dTo.getHours() == 18){
             if(!weatherObj.maxTemperature) {
-              weatherObj.maxTemperature = item.location.temperature
+              weatherObj.maxTemperature = item.location.temperature;
             }else if(item.location.temperature.value > weatherObj.maxTemperature.value){
-              weatherObj.maxTemperature = item.location.temperature
+              weatherObj.maxTemperature = item.location.temperature;
             }
             weatherObj.to = dTo;
           }else if(dFrom.getHours() == 12 && dTo.getHours() == 18 && !(item.location.maxTemperature)) {
@@ -72,6 +72,7 @@ export default function(state = INITIAL_STATE , action) {
           };
           //Make a new property to sort by, including temperature, symbolnr and precipitation
           if(weatherObj.symbol && weatherObj.maxTemperature) {
+            if(weatherObj.maxTemperature.value) weatherObj.maxTemperature.value = Number(weatherObj.maxTemperature.value);
             nState.weatherArray.push(weatherObj);
             weatherObj = {};
             previousDate = dFrom.getDate();

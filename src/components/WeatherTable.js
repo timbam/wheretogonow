@@ -46,7 +46,7 @@ export default (props) => {
           return (
             <td key={index}>
               <img src={weatherIcon + SYMBOLS[symbolNr-1] + ".png"}  /><br/>
-              {weather.maxTemperature.value.slice(0,weather.maxTemperature.value.indexOf('.'))} °C <br/>
+              {Math.round(weather.maxTemperature.value)} °C <br/>
               <span style={{fontSize: '0.95em'}} >{weather.precipitation.value} mm</span>
             </td>
           );
