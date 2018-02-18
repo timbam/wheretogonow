@@ -70,6 +70,7 @@ export default function(state = INITIAL_STATE , action) {
               weatherObj.precipitation = item.location.precipitation;
             }
           };
+          //Make a new property to sort by, including temperature, symbolnr and precipitation
           if(weatherObj.symbol && weatherObj.maxTemperature) {
             nState.weatherArray.push(weatherObj);
             weatherObj = {};

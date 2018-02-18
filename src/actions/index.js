@@ -28,7 +28,7 @@ export function findClosestCity(coordinates) {
     type: FIND_CLICKED_CITY,
     payload: request
   }
-}
+} 
 
 export function findNearbyCities(cityObject, radius, numberOfCities) {
   const request = axios.post('/api/findNearbyCities', {
