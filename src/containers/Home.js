@@ -13,8 +13,8 @@ class Home extends React.Component {
 
   componentWillMount() {
     if(typeof this.props.weather.nearbyCitiesWeather[0] != 'undefined'){
-      var today = new Date();
-      var dateOfData = new Date(this.props.weather.nearbyCitiesWeather[0].weatherArray[0].from);
+      const today = new Date();
+      const dateOfData = new Date(this.props.weather.nearbyCitiesWeather[0].weatherArray[0].from);
       if(dateOfData.getTime() + 4e7 < today.getTime()){
         this.props.weather.nearbyCitiesWeather.map(city => this.props.fetchWeather(city))
       }
@@ -54,6 +54,7 @@ class Home extends React.Component {
   render(){
     localStorage.setItem('epicenter', JSON.stringify(this.props.weather.epicenter));
     localStorage.setItem('nearbyCitiesWeather', JSON.stringify(this.props.weather.nearbyCitiesWeather));
+    console.log(this.props.weather);
       return(
         <div className="rowYo home">
           <GettingStartedGoogleMap

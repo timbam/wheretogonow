@@ -5,17 +5,17 @@ import classNames from 'classnames';
 export default (props) => {
   if(props.weather.nearbyCitiesWeather.length > 0){
     function renderDays(weather, index) {
-      var buttonClasses = classNames({
+      let buttonClasses = classNames({
         'btn': true,
         'btn-primary': true,
         'btn-outline': true,
         'active': (props.weather.dayIndex == index)
       })
-      var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
-      var dFrom = new Date(weather.from);
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Nov', 'Dec'];
+      const dFrom = new Date(weather.from);
       //
-      var numberEnding = function(date){
+      const numberEnding = function(date){
         switch (date) {
           case 1: return date + 'st';
           case 2: return date + 'nd';
@@ -34,14 +34,13 @@ export default (props) => {
         );
       }
       function renderWeather(cityData, index) {
-        if(window.innerWidth < 600) {
-          var weatherIcon = "/sym/b30/";
-        }else {
-          var weatherIcon = "sym/b38/";
-        }
+        const weatherIcon = window.innerWidth < 600 ?
+            "/sym/b30/" :
+            "sym/b38/";
+        let symbolNr;
         const tempArray = cityData.weatherArray.map((weather, index) => {
-          if(cityData.weatherArray[index].symbol) {
-            var symbolNr = Number(cityData.weatherArray[index].symbol.number);
+          if(cityData.weatherArray[index].symbol.number) {
+            symbolNr = Number(cityData.weatherArray[index].symbol.number);
           };
           return (
             <td key={index}>

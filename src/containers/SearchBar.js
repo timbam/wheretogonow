@@ -74,7 +74,7 @@ class SearchBar extends React.Component {
     });
   }
   onArrowUpOrDown(newId){
-    var btn = this.refs['button' + newId];
+    let btn = this.refs['button' + newId];
     if(!btn){
       this.refs.inputForm.focus();
       this.setState({
@@ -113,19 +113,19 @@ class SearchBar extends React.Component {
   }
 
   render(){
-    var sResultsClasses = classNames({
+    let sResultsClasses = classNames({
         'searchResults': true,
          'col-lg-12': true,
          'isHid': !(this.state.term.length > 0) || (this.state.isBlurred && !this.state.btnFocused)
     });
-    var hiddenClass = classNames({
+    let hiddenClass = classNames({
       'isHid': (this.state.isHidden)
     })
-    var infoBox = classNames({
+    let infoBox = classNames({
       'infoBox': true,
       'isHid': (this.state.hideInfoBox)
     })
-    var searchResults = this.props.weather.searchResults.map((item, index) => {
+    const searchResults = this.props.weather.searchResults.map((item, index) => {
       return(
         <div key={item._id} >
           <button ref={"button" + index}
