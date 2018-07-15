@@ -8,8 +8,12 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 // yr.no stuff
-const yrno = require('yr.no-interface'),
-LOC_VER = 1.3;
+const yrno = require('yr.no-interface')({
+  request: {
+    timeout: 25000
+  }
+});
+const LOC_VER = 1.3;
 const xml2js = require('xml2js');
 const cities = require('./src/database/cities15000.json');
 const cities_1000 = require('./src/database/cities1000.json');
@@ -27,20 +31,26 @@ app.post('/api/getWeather', function(req, res) {
   const cityName = req.body.name;
   const id = req.body.id;
   yrno.locationforecastlts({
-    lat: coordinates[0],
-    lon: coordinates[1]
-  }, LOC_VER, function(err, xml) {
-    if(err) console.log(err);
-    new xml2js.Parser({
-      async: true,
-      mergeAttrs: true,
-      explicitArray: false
-    }).parseString(xml, function(err, json) {
+    query: {
+      lat: coordinates[0],
+      lon: coordinates[1]
+    },
+    version: LOC_VER
+  }, function(err, xml) {
+    if(err){
+      console.log(err);
+    }else{
+      new xml2js.Parser({
+        async: true,
+        mergeAttrs: true,
+        explicitArray: false
+      }).parseString(xml, function(err, json) {
         json.name = cityName;
         json._id = id;
         json.coordinates = coordinates;
         res.send(json);
       });
+    }
   });
 });
 

@@ -8,6 +8,23 @@ export const ADD_EPICENTER = 'ADD_EPICENTER';
 export const FIND_CLICKED_CITY = 'FIND_CLICKED_CITY';
 export const REMOVE_CITY = 'REMOVE_CITY';
 export const ADD_MAP = 'ADD_MAP';
+export const SET_CIRCLE_VISIBLE = 'SET_CIRCLE_VISIBLE';
+export const SET_CIRCLE_RADIUS = 'SET_CIRCLE_RADIUS';
+export const UPDATE_MAP_CENTER = 'UPDATE_MAP_CENTER';
+
+export function setCircleVisible(bool) {
+  return {
+    type: SET_CIRCLE_VISIBLE,
+    payload: bool
+  }
+}
+
+export function setCircleRadius(radius) {
+  return {
+    type: SET_CIRCLE_RADIUS,
+    payload: radius
+  }
+}
 
 export function searchCity(name, numberOfCities) {
   const request = axios.post('/api/search', {
@@ -28,7 +45,7 @@ export function findClosestCity(coordinates) {
     type: FIND_CLICKED_CITY,
     payload: request
   }
-} 
+}
 
 export function findNearbyCities(cityObject, radius, numberOfCities) {
   const request = axios.post('/api/findNearbyCities', {
@@ -59,6 +76,13 @@ export function addEpicenterToState(cityObject) {
     type: ADD_EPICENTER,
     payload: cityObject
   };
+}
+
+export function updateMapCenter(coordinates) {
+  return{
+    type: UPDATE_MAP_CENTER,
+    payload: coordinates
+  }
 }
 
 export function setIndexToSortBy(index) {

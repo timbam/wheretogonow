@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
-import { searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState } from '../actions/index';
+import { searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState, setCircleVisible, setCircleRadius } from '../actions/index';
 import _ from 'lodash';
 import Slider from 'rc-slider';
 import classNames from 'classnames';
@@ -10,11 +10,13 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { term: '', radius: 300, numberOfCities: 5, isHidden: false, isBlurred: false, btnFocused: false, btnID: -1, hideInfoBox: true};
+    this.state = { term: '', numberOfCities: 5, isHidden: false, isBlurred: false, btnFocused: false, btnID: -1, hideInfoBox: true};
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onSetIndexToSortBy = this.onSetIndexToSortBy.bind(this);
     this.onToggleInfoBox = this.onToggleInfoBox.bind(this);
+    this.onCitySelect = this.onCitySelect.bind(this);
+    this.onFetchWeather = this.onFetchWeather.bind(this);
   }
 
   onInputChange(e) {
@@ -26,14 +28,13 @@ class SearchBar extends React.Component {
     e.preventDefault();
   }
 
-  onfetchWeather(cityObject) {
+  onFetchWeather(cityObject) {
     this.setState({
       term: '',
       btnID: -1
     });
     // console.log(cityObject);
-    this.props.addEpicenterToState(cityObject);
-    this.props.findNearbyCities(cityObject, this.state.radius, this.state.numberOfCities).then(() =>
+    this.props.findNearbyCities(cityObject, this.props.maps.circleRadius, this.state.numberOfCities).then(() =>
       this.props.weather.nearbyCities.map(city => this.props.fetchWeather(city))
     );
   }
@@ -88,6 +89,15 @@ class SearchBar extends React.Component {
       btnID: newId
     });
   }
+
+  onCitySelect(cityObject){
+    this.props.addEpicenterToState(cityObject);
+    // this.props.setCircleVisible(true);
+    this.setState({
+      term: '',
+    });
+  }
+
   onKeyDown(e) {
     switch (e.key) {
       case "ArrowDown":
@@ -99,8 +109,10 @@ class SearchBar extends React.Component {
         this.onArrowUpOrDown(this.state.btnID - 1);
         break;
       case "Enter":
-        if(this.props.weather.searchResults[this.state.btnID]){
-          this.onfetchWeather(this.props.weather.searchResults[this.state.btnID]);
+        let cityObject = this.props.weather.searchResults[this.state.btnID];
+        if(cityObject){
+          this.onCitySelect(cityObject);
+          // this.onFetchWeather(this.props.weather.searchResults[this.state.btnID]);
         }
       break;
       case "Escape":
@@ -108,11 +120,11 @@ class SearchBar extends React.Component {
           btnFocused: false
         });
       default:
-
     }
   }
 
   render(){
+    const { epicenter } = this.props.weather;
     let sResultsClasses = classNames({
         'searchResults': true,
          'col-lg-12': true,
@@ -125,12 +137,16 @@ class SearchBar extends React.Component {
       'infoBox': true,
       'isHid': (this.state.hideInfoBox)
     })
+    let fetchWeatherBtn = classNames({
+      'btn btn-primary fetchWeatherBtn': true,
+    })
     const searchResults = this.props.weather.searchResults.map((item, index) => {
       return(
         <div key={item._id} >
           <button ref={"button" + index}
             onKeyDown={this.onKeyDown.bind(this)}
-            onMouseDown={this.onfetchWeather.bind(this, item)}
+            // onMouseDown={this.onFetchWeather.bind(this, item)} //We fetch the weather later
+            onMouseDown={this.onCitySelect.bind(this, item)}
             className="btn btn-default">{item.name} ({item.country_code})
           </button>
         </div>
@@ -143,7 +159,7 @@ class SearchBar extends React.Component {
           <form onSubmit={this.onFormSubmit} className="input-group col-lg-12">
             <input
             ref="inputForm"
-            placeholder="Where are you now?"
+            placeholder="Search for a city.  (Or click on the map)"
             className="form-control"
             value={this.state.term}
             onChange={this.onInputChange}
@@ -151,8 +167,8 @@ class SearchBar extends React.Component {
             onBlur={this.onBlurInput.bind(this)}
             onKeyDown={this.onKeyDown.bind(this)}
             />
-            <button onClick={this.onToggleInfoBox} className="btn btn-info" >Info</button>
-            <div className={infoBox}>
+            {/* <button onClick={this.onToggleInfoBox} className="btn btn-info" >Info</button> */}
+            {/* <div className={infoBox}>
               <p>
                 - <span className="bold">Limit</span> your search results with a radius and number of cities. <br/>
                 - <span className="bold">Search</span> for a city to get the weather of the cities nearby. <br/>
@@ -160,31 +176,40 @@ class SearchBar extends React.Component {
                 - <span className="bold">Remove cities</span> by single-clicking on them. <br/>
                 - <span className="bold">Sort</span> cities by temperature by clicking on the date in the table. <br/>
                 <span className="italic">Weather data from <a target="_blank" href="https://www.yr.no">yr.no</a></span>.
-            </p>
-            </div>
+              </p>
+            </div> */}
           </form>
           <div className={sResultsClasses} onBlur={this.onBlurSearchResults.bind(this)} >
             {this.props.weather.searchResults.length > 0 ? searchResults : null}
           </div>
           <div className="radiusBox rBoxes" >
-            <p>Radius: <span className="rangeTitles" >{this.state.radius} </span>km</p>
-            <Slider step={10} max={600}  min={100} value={this.state.radius} onChange={radius => this.setState({radius})} />
+            <p>Radius: <span className="rangeTitles" >{this.props.maps.circleRadius} </span>km</p>
+            <Slider step={10} max={600}  min={100}
+                    value={this.props.maps.circleRadius}
+                    onBeforeChange={() => this.props.setCircleVisible(true)}
+                    onAfterChange={() => this.props.setCircleVisible(false)}
+                    onChange={radius => this.props.setCircleRadius(radius)}
+                   />
           </div>
           <div className="rangeBox rBoxes" >
             <p>Number of cities: <span className="rangeTitles">{this.state.numberOfCities}</span></p>
             <Slider min={1} max={9} value={this.state.numberOfCities} onChange={(numberOfCities) => this.setState({numberOfCities})} />
           </div>
+          <button
+            className={fetchWeatherBtn}
+            onClick={() => this.onFetchWeather(epicenter)}
+            >{"Get weather for cities around " + epicenter.name }</button>
         </div>
       </div>
     );
   }
 }
-function mapStateToProps({ weather }) {
-  return { weather };
+function mapStateToProps({ weather, maps }) {
+  return { weather, maps };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState }, dispatch);
+  return bindActionCreators({ searchCity, findNearbyCities, fetchWeather, setIndexToSortBy, addEpicenterToState, setCircleVisible, setCircleRadius }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
-import { setIndexToSortBy, findClosestCity, fetchWeather, removeCity, addMap, addEpicenterToState } from '../actions/index';
+import { setIndexToSortBy, findClosestCity, fetchWeather, removeCity, addMap, addEpicenterToState, updateMapCenter } from '../actions/index';
 import _ from 'lodash';
 import WeatherTable from '../components/WeatherTable';
 import GettingStartedGoogleMap from '../components/GettingStartedGoogleMap';
@@ -25,7 +25,7 @@ class Home extends React.Component {
     this.props.setIndexToSortBy(index);
   }
 
-  findClosestCity(coordinates) {
+  onDoubleClick(coordinates) {
     this.props.findClosestCity(coordinates).then( () => {
       if(!_.find(this.props.weather.nearbyCitiesWeather, {_id: this.props.weather.clickedCity._id})) {
            this.props.fetchWeather(this.props.weather.clickedCity);
@@ -44,17 +44,22 @@ class Home extends React.Component {
 
   onCenterChanged(){
     if(this._mapComponent){
-      this.props.addEpicenterToState({
-        coordinates: [this._mapComponent.getCenter().lat(), this._mapComponent.getCenter().lng()]
-      });
+      this.props.updateMapCenter(
+        [this._mapComponent.getCenter().lat(), this._mapComponent.getCenter().lng()]
+      );
     }
   }
 
+  onSingleClick(coordinates){
+    this.props.findClosestCity(coordinates).then( () => {
+      this.props.addEpicenterToState(this.props.weather.clickedCity);
+    });
+  }
 
   render(){
     localStorage.setItem('epicenter', JSON.stringify(this.props.weather.epicenter));
     localStorage.setItem('nearbyCitiesWeather', JSON.stringify(this.props.weather.nearbyCitiesWeather));
-    console.log(this.props.weather);
+    console.log(this.props);
       return(
         <div className="rowYo home">
           <GettingStartedGoogleMap
@@ -62,10 +67,12 @@ class Home extends React.Component {
             containerElement={<div className="googleMap" />}
             mapElement={<div style={{height:`100%`}} />}
             weather={this.props.weather}
+            maps = {this.props.maps}
             onCenterChanged={this.onCenterChanged.bind(this)}
-            findClosestCity={this.findClosestCity.bind(this)}
+            onDoubleClick={this.onDoubleClick.bind(this)}
             onMarkerClick={this.onMarkerClick.bind(this)}
             onMapLoad={this.onMapLoad.bind(this)}
+            onSingleClick={this.onSingleClick.bind(this)}
             />
           <WeatherTable weather={this.props.weather} filterByDay={this.filterByDay.bind(this)} />
         </div>
@@ -74,12 +81,12 @@ class Home extends React.Component {
 }
 
 
-function mapStateToProps({ weather }) {
-  return { weather };
+function mapStateToProps({ weather, maps }) {
+  return { weather, maps };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators( { setIndexToSortBy, findClosestCity, fetchWeather, removeCity, addMap, addEpicenterToState }, dispatch);
+  return bindActionCreators( { setIndexToSortBy, findClosestCity, fetchWeather, removeCity, addMap, addEpicenterToState, updateMapCenter }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

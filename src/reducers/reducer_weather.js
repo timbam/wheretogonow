@@ -1,18 +1,26 @@
 import _ from 'lodash';
-import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER, FIND_CLICKED_CITY, REMOVE_CITY } from '../actions/index';
+import { SEARCH_CITY, FIND_NEARBY_CITIES, FETCH_WEATHER, INDEX_TO_SEARCH_BY, ADD_EPICENTER, FIND_CLICKED_CITY, REMOVE_CITY, UPDATE_MAP_CENTER } from '../actions/index';
+import { paris } from '../database/constants';
+
+const mapCenter = JSON.parse(localStorage.getItem('epicenter')) ?
+                  JSON.parse(localStorage.getItem('epicenter')).coordinates :
+                  paris.coordinates;
 
 const INITIAL_STATE ={
+  mapCenter: mapCenter,
   searchResults: [],
   nearbyCities: [],
   nearbyCitiesWeather: JSON.parse(localStorage.getItem('nearbyCitiesWeather')) || [],
   clickedCity: null,
-  epicenter: JSON.parse(localStorage.getItem('epicenter')) || {coordinates: [48.8, 2.35]},
+  epicenter: JSON.parse(localStorage.getItem('epicenter')) || paris,
   dayIndex: 0,
   map: {}
 };
 
 export default function(state = INITIAL_STATE , action) {
   switch (action.type) {
+    case UPDATE_MAP_CENTER:
+      return { ...state, mapCenter: action.payload};
     case SEARCH_CITY:
       return { ...state, searchResults: action.payload.data};
     case FIND_NEARBY_CITIES:
@@ -37,7 +45,7 @@ export default function(state = INITIAL_STATE , action) {
         const reducedArray =  state.nearbyCitiesWeather.filter(city=> city._id !== action.payload);
         return {...state, nearbyCitiesWeather: reducedArray };
     case ADD_EPICENTER:
-      return {...state, epicenter: action.payload};
+      return {...state, epicenter: action.payload, mapCenter: action.payload.coordinates };
     case INDEX_TO_SEARCH_BY:
       let nearbyCitiesByWeatherOrdered = _.orderBy(state.nearbyCitiesWeather, ['weatherArray[' + action.payload + '].weatherRating'], ['asc']);
       return { ...state, nearbyCitiesWeather: nearbyCitiesByWeatherOrdered, dayIndex: action.payload};
