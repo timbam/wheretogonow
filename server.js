@@ -71,9 +71,8 @@ app.post('/api/search', function(req, res) {
 })
 
 app.post('/api/findClosestCity', function(req, res) {
-  const coordinates = req.body.coordinates;
-
-  function nearestCity(coordinates){
+  const { coordinates, precisionDistance} = req.body;
+  function nearestCity(coordinates, precisionDistance){
     const cities = cities_1000;
     let minDist = 1000;
     let objToReturn = {}, dist;
@@ -83,7 +82,7 @@ app.post('/api/findClosestCity', function(req, res) {
           minDist = dist;
           objToReturn = city;
       }
-      if(dist < 2) {
+      if(dist < precisionDistance) {
           break;
       }
     }

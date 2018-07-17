@@ -37,9 +37,10 @@ export function searchCity(name, numberOfCities) {
   }
 }
 
-export function findClosestCity(coordinates) {
+export function findClosestCity(coordinates, precisionDistance = 5) {
   const request = axios.post('/api/findClosestCity', {
-    coordinates: coordinates
+    coordinates,
+    precisionDistance
   });
   return {
     type: FIND_CLICKED_CITY,

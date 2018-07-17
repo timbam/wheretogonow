@@ -51,7 +51,8 @@ class Home extends React.Component {
   }
 
   onSingleClick(coordinates){
-    this.props.findClosestCity(coordinates).then( () => {
+    const precisionDistance = 30; //Lower the precision to get the biggest city around
+    this.props.findClosestCity(coordinates, precisionDistance).then( () => {
       this.props.addEpicenterToState(this.props.weather.clickedCity);
     });
   }
@@ -59,9 +60,10 @@ class Home extends React.Component {
   render(){
     localStorage.setItem('epicenter', JSON.stringify(this.props.weather.epicenter));
     localStorage.setItem('nearbyCitiesWeather', JSON.stringify(this.props.weather.nearbyCitiesWeather));
-    console.log(this.props);
+    // console.log(this.props);
       return(
         <div className="rowYo home">
+          <p className="mapTip">Tip: Double-click on a city to add it. Click on it again to remove it.</p>
           <GettingStartedGoogleMap
             className="googleMap"
             containerElement={<div className="googleMap" />}
