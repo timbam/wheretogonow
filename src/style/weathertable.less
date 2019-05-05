@@ -10,7 +10,8 @@
   transform: rotateX(180deg);
 }
 
-td, th {
+td,
+th {
   text-align: center;
   vertical-align: middle;
   width: 100px;
@@ -26,121 +27,120 @@ td, th {
 }
 .btn-outline {
   color: inherit;
-    transition: all .1s;
+  transition: all 0.1s;
   background: transparent none;
   text-shadow: none;
-    border-width: 2px;
-    border-radius: 10px;
+  border-width: 2px;
+  border-radius: 10px;
 }
 
 .table-s > tbody > tr:nth-of-type(odd) {
-    background-color: fade(@teal, 20%);
+  background-color: fade(@teal, 20%);
 }
-.btn-primary {
+.btn.btn-primary {
   border-color: @teal !important;
-  &:hover, &:focus, &:active{
+  &:hover,
+  &:focus,
+  &:active {
     background-color: @teal !important;
     border-color: @teal;
+    color: white;
+    outline: none;
+    box-shadow: none !important;
   }
 }
-.btn-primary.active{
+.btn.btn-primary.active {
   border-color: @teal;
-  background-color: @teal;
-  &:hover, &:focus{
+  background-color: @teal !important;
+  &:hover,
+  &:focus {
     border-color: @teal;
     background-color: @teal;
   }
 }
 
-
 // Iphone 4
 @media screen and (max-width: 369px) {
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td
-{
-  padding: 0;
-}
-.weatherTable {
-  font-size: 0.7em;
-}
-.btn-primary {
-  padding: 1px;
-}
+  .table > thead > tr > th,
+  .table > tbody > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > td {
+    padding: 0;
+  }
+  .weatherTable {
+    font-size: 0.7em;
+  }
+  .btn-primary {
+    padding: 1px;
+  }
 }
 // Iphone 6
 @media screen and (min-width: 370px) and (max-width: 410px) {
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td
-{
-  padding: 0;
-}
-.weatherTable {
-  font-size: 0.7em;
-}
-.btn {
-  padding: 1px;
-}
+  .table > thead > tr > th,
+  .table > tbody > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > td {
+    padding: 0;
+  }
+  .weatherTable {
+    font-size: 0.7em;
+  }
+  .btn {
+    padding: 1px;
+  }
 }
 // Nexus 6, Iphone 6+
 @media screen and (min-width: 411px) and (max-width: 599px) {
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td
-{
-  padding: 0;
-}
-.weatherTable {
-  font-size: 0.7em;
-}
-.btn {
-  padding: 1px;
-}
+  .table > thead > tr > th,
+  .table > tbody > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > td {
+    padding: 0;
+  }
+  .weatherTable {
+    font-size: 0.7em;
+  }
+  .btn {
+    padding: 1px;
+  }
 }
 // Small tablets
 @media screen and (min-width: 600px) and (max-width: 749px) {
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td
-{
-  padding: 0;
-}
-.weatherTable {
-  font-size: 0.8em;
-}
-.btn {
-  padding: 3px 6px 3px 6px;
-}
+  .table > thead > tr > th,
+  .table > tbody > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > td {
+    padding: 0;
+  }
+  .weatherTable {
+    font-size: 0.8em;
+  }
+  .btn {
+    padding: 3px 6px 3px 6px;
+  }
 }
 // Ipad 1-4
 @media screen and (min-width: 750px) and (max-width: 999px) {
-.table > tbody > tr > th,
-.table > thead > tr > th
-{
-  padding: 0;
-}
-.weatherTable {
-  font-size: 0.8em;
-}
+  .table > tbody > tr > th,
+  .table > thead > tr > th {
+    padding: 0;
+  }
+  .weatherTable {
+    font-size: 0.8em;
+  }
 }
 // Big tablets / Small screens
 @media screen and (min-width: 1000px) and (max-width: 1299px) {
-.table > tbody > tr > th,
-.table > thead > tr > th
-{
-  padding: 4px;
-}
+  .table > tbody > tr > th,
+  .table > thead > tr > th {
+    padding: 4px;
+  }
 }
 // // Normal Laptop screens
 // @media screen and (min-width: 1300px) {
-//
+//
 // }
 // // Normal PC screens
 // @media screen and (min-width: 1600px) {
-//
+//
 // }

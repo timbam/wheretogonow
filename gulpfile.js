@@ -15,13 +15,7 @@ var sourcemaps = require("gulp-sourcemaps");
 
 var production = process.env.NODE_ENV === "production";
 
-var dependencies = [
-  "react",
-  "react-dom",
-  "react-router",
-  "redux",
-  "underscore"
-];
+var dependencies = ["react", "react-dom", "redux", "underscore"];
 
 /*
  |--------------------------------------------------------------------------
@@ -51,7 +45,7 @@ gulp.task(
   gulp.series("browserify-vendor", function() {
     return browserify({ entries: "src/index.js", debug: true })
       .external(dependencies)
-      .transform(babelify, { presets: ["react", "es2015", "stage-1"] })
+      .transform(babelify, { presets: ["@babel/preset-react"] })
       .bundle()
       .pipe(source("bundle.js"))
       .pipe(buffer())
@@ -74,7 +68,7 @@ gulp.task(
       browserify({ entries: "src/index.js", debug: true }, watchify.args)
     );
     bundler.external(dependencies);
-    bundler.transform(babelify, { presets: ["react", "es2015", "stage-1"] });
+    bundler.transform(babelify, { presets: ["@babel/preset-react"] }); //, { presets: ["react", "es2015", "stage-1"] }
     bundler.on("update", rebundle);
     return rebundle();
 
@@ -125,8 +119,8 @@ gulp.task("styles", function() {
 });
 
 gulp.task("watch", function() {
-  gulp.watch("src/style/**/*.less", ["styles"]);
+  gulp.watch("src/style/**/*.less", gulp.series("styles"));
 });
 
-gulp.task("default", ["styles", "browserify-watch", "watch"]);
-gulp.task("build", ["styles", "browserify"]);
+gulp.task("default", gulp.parallel("styles", "browserify-watch", "watch"));
+gulp.task("build", gulp.parallel("styles", "browserify"));
