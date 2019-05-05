@@ -81,8 +81,9 @@
   &:hover {
     background-color: @teal;
     color: white;
+    box-shadow: none;
   }
-  &:focus {
+  &:focus:not(:hover) {
     outline: none;
     background-color: white;
     color: #0b2229;
