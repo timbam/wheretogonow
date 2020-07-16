@@ -48,7 +48,7 @@
     "history": "^4.9.0",
     "jquery": "3.4.1",
     "less": "^3.9.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "morgan": "1.9.1",
     "popper.js": "1.15.0",
     "rc-slider": "^8.6.9",
