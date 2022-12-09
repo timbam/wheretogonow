@@ -34,7 +34,7 @@
     "browserify": "^16.2.3",
     "classnames": "^2.2.6",
     "cookie-parser": "^1.4.4",
-    "express": "4.16.4",
+    "express": "4.17.3",
     "gulp": "4.0.1",
     "gulp-autoprefixer": "^6.1.0",
     "gulp-cli": "2.2.0",
